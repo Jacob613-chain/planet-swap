@@ -1,0 +1,33 @@
+{
+  "name": "@cowprotocol/cowswap",
+  "version": "1.78.0",
+  "description": "CoW Swap",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "patch-package": "npx patch-package",
+    "cosmos:clear": "rm -rf ./public/cosmos",
+    "cosmos:run": "yarn run _cosmos:run",
+    "build:cosmos": "npx cross-env NODE_ENV=development npx cosmos-export",
+    "_cosmos:run": "yarn cosmos:clear && npx cosmos"
+  },
+  "browser": {
+    "crypto": false
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "nx": {}
+}
