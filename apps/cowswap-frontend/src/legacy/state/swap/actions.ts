@@ -28,3 +28,4 @@ export const replaceOnlyTradeRawState = createAction<ReplaceOnlyTradeRawStatePay
 export const replaceSwapState = createAction<ReplaceSwapStatePayload>('swap/replaceSwapState')
 export const setRecipient = createAction<{ recipient: string | null }>('swap/setRecipient')
 export const setRecipientAddress = createAction<{ recipientAddress: string | null }>('swap/setRecipientAddress')
+export const setMaxBallance = createAction<{maxBallance : string | null}>('swap/setMaxBallance')

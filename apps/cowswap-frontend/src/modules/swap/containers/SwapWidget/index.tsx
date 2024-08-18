@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useCurrencyAmountBalance } from '@cowprotocol/balances-and-allowances'
 import { NATIVE_CURRENCIES, TokenWithLogo } from '@cowprotocol/common-const'
@@ -141,7 +141,7 @@ export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
   }
 
   const inputCurrencyPreviewInfo = {
-    amount: inputCurrencyInfo.amount,
+    amount: inputCurrencyInfo.balance,
     fiatAmount: inputCurrencyInfo.fiatAmount,
     balance: inputCurrencyInfo.balance,
     label: isSellTrade ? 'Sell amount' : 'Expected sell amount',
@@ -176,7 +176,6 @@ export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
 
   const openNativeWrapModal = useCallback(() => setOpenNativeWrapModal(true), [])
   const dismissNativeWrapModal = useCallback(() => setOpenNativeWrapModal(false), [])
-
   const swapButtonContext = useSwapButtonContext({
     feeWarningAccepted,
     impactWarningAccepted,
@@ -280,7 +279,6 @@ export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
     disableQuotePolling: true,
     tradeQuoteStateOverride,
   }
-
   useSetLocalTimeOffset(getQuoteTimeOffset(swapButtonContext.quoteDeadlineParams))
 
   return (

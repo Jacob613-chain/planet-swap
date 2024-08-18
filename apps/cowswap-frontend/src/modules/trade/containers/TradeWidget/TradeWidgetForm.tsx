@@ -37,6 +37,7 @@ import { useTradeTypeInfo } from '../../hooks/useTradeTypeInfo'
 import { TradeType } from '../../types'
 import { TradeWidgetLinks } from '../TradeWidgetLinks'
 import { WrapFlowActionButton } from '../WrapFlowActionButton'
+import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 
 const ZERO_BANNER_STORAGE_KEY = 'limitOrdersZeroBalanceBanner:v0'
 

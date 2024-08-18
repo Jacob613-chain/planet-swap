@@ -6,7 +6,6 @@ import { getCurrentChainIdFromUrl, shortenAddress } from '@cowprotocol/common-ut
 import { GnosisSafeInfo, WalletDetails, WalletInfo } from './types'
 
 export const walletInfoAtom = atom<WalletInfo>({ chainId: getCurrentChainIdFromUrl() })
-
 export const walletDetailsAtom = atom<WalletDetails>({
   // Account details
   isSmartContractWallet: false,
@@ -29,5 +28,4 @@ export const walletDisplayedAddress = atom((get) => {
 
   return ensName || (account ? shortenAddress(account) : '')
 })
-
 export const hwAccountIndexAtom = atomWithStorage<number>('hw-account-index:v1', 0)

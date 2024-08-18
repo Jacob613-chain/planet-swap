@@ -24,7 +24,6 @@ export function ReceiveAmount(props: ReceiveAmountProps) {
   const { amountAfterFees } = getOrderTypeReceiveAmounts(props.receiveAmountInfo)
 
   const title = amountAfterFees.toExact() + ' ' + props.currency.symbol
-
   return (
     <styledEl.ReceiveAmountBox>
       <div>

@@ -1,3 +1,4 @@
+import { amountToPrecisionDown } from './../../../../apps/explorer/src/utils/format';
 
 
 import {
@@ -83,16 +84,16 @@ export function formatInputAmount(
   isIndependentField = false
 ): string {
   if (!amount) return ''
-
   const usesMaxBalance = balance ? maxAmountSpend(balance) : undefined
   const amountMatchesBalance = !!(usesMaxBalance && amount.equalTo(usesMaxBalance))
 
   if (isIndependentField || amountMatchesBalance) {
-    return trimTrailingZeros(FractionUtils.fractionLikeToExactString(amount))
+    return trimTrailingZeros(FractionUtils.fractionLikeToExactString(usesMaxBalance))
   }
 
-  const precision = getPrecisionForAmount(amount)
+  
+  const precision = getPrecisionForAmount(usesMaxBalance)
   const result = amount.toFixed(precision)
-
   return trimTrailingZeros(+result === 0 ? amount.toSignificant(AMOUNT_PRECISION) : result)
 }
+

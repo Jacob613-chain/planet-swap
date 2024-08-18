@@ -24,6 +24,9 @@ import * as styledEl from './styled'
 
 import { useTradeConfirmState } from '../../hooks/useTradeConfirmState'
 import { PriceUpdatedBanner } from '../PriceUpdatedBanner'
+import { maxAmountSpend } from '@cowprotocol/common-utils'
+import { useIsSafeWallet } from '@cowprotocol/wallet'
+import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 
 const ONE_SEC = ms`1s`
 
@@ -34,8 +37,8 @@ export interface TradeConfirmationProps {
 
   account: string | undefined
   ensName: string | undefined
-  // inputCurrencyInfo: CurrencyPreviewInfo
-  // outputCurrencyInfo: CurrencyPreviewInfo
+  inputCurrencyInfo: CurrencyPreviewInfo
+  outputCurrencyInfo: CurrencyPreviewInfo
   isConfirmDisabled: boolean
   priceImpact: PriceImpact
   title: JSX.Element | string
@@ -60,8 +63,8 @@ export function TradeConfirmation(props: TradeConfirmationProps) {
     onDismiss,
     account,
     ensName,
-    // inputCurrencyInfo,
-    // outputCurrencyInfo,
+    inputCurrencyInfo,
+    outputCurrencyInfo,
     isConfirmDisabled,
     priceImpact,
     title,
@@ -78,12 +81,15 @@ export function TradeConfirmation(props: TradeConfirmationProps) {
   useEffect(() => {
     setFrozenProps(hasPendingTrade ? propsRef.current : null)
   }, [hasPendingTrade])
-
   const showRecipientWarning =
     recipient &&
     (account || ensName) &&
     ![account?.toLowerCase(), ensName?.toLowerCase()].includes(recipient.toLowerCase())
+    
+    const isSafeWallet = useIsSafeWallet()
 
+    // const maxBalance = maxAmountSpend(inputCurrencyInfo.balance || undefined, isSafeWallet)
+    // pendingTrade?.inputAmount.numerator.toString(RADIX_DECIMAL) : "14000000";
   // const inputAmount = inputCurrencyInfo.amount?.toExact()
   // const outputAmount = outputCurrencyInfo.amount?.toExact()
 
@@ -119,6 +125,7 @@ export function TradeConfirmation(props: TradeConfirmationProps) {
 
     onConfirm()
   }
+  // console.log("======>", pendingTrade?.inputAmount.numerator.toString(RADIX_DECIMAL), frozenProps?.onConfirm)
 
   return (
     <styledEl.WidgetWrapper onKeyDown={(e) => e.key === 'Escape' && onDismiss()}>
@@ -131,7 +138,7 @@ export function TradeConfirmation(props: TradeConfirmationProps) {
         </styledEl.HeaderRightContent>
       </styledEl.Header>
       <styledEl.ContentWrapper id="trade-confirmation">
-        <styledEl.AmountsPreviewContainer>
+        {/* <styledEl.AmountsPreviewContainer> */}
           {/* <CurrencyAmountPreview id="input-currency-preview" currencyInfo={inputCurrencyInfo} /> */}
           {/* <styledEl.SeparatorWrapper> */}
             {/* <styledEl.AmountsSeparator /> */}
@@ -141,7 +148,7 @@ export function TradeConfirmation(props: TradeConfirmationProps) {
             currencyInfo={outputCurrencyInfo}
             priceImpactParams={priceImpact}
           /> */}
-        </styledEl.AmountsPreviewContainer>
+        {/* </styledEl.AmountsPreviewContainer> */}
         {children}
         {/*Banners*/}
         {showRecipientWarning && <CustomRecipientWarningBanner orientation={BannerOrientation.Horizontal} />}

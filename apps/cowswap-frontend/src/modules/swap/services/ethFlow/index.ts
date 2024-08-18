@@ -92,7 +92,6 @@ export async function ethFlow(
         callbacks.closeModals()
       }
     )
-
     emitPostedOrderEvent({
       chainId,
       id: orderId,
@@ -105,7 +104,6 @@ export async function ethFlow(
       uiOrderType: UiOrderType.SWAP,
       isEthFlow: true,
     })
-
     logTradeFlow('ETH FLOW', 'STEP 5: add pending order step')
     addPendingOrderStep(
       {

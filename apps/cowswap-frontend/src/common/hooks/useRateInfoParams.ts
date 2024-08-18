@@ -36,7 +36,6 @@ export function useRateInfoParams(
     tryParseCurrencyAmount(parseRate(true), inputCurrencyAmount?.currency || undefined),
     tryParseCurrencyAmount(parseRate(false), outputCurrencyAmount?.currency || undefined)
   )
-
   return useSafeMemoObject({
     chainId,
     inputCurrencyAmount,

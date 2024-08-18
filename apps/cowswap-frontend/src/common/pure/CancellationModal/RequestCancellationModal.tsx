@@ -95,7 +95,6 @@ export function RequestCancellationModal(props: RequestCancellationModalProps): 
 
   const toggleType = useCallback(() => {
     const changedToOnChain = type !== 'onChain'
-    console.log("Tokenamoint:", TokenAmount);
     setType(changedToOnChain ? 'onChain' : 'offChain')
 
     // If OnChain type is set, then open "show more" to explain tx cost details

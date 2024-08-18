@@ -149,7 +149,6 @@ export const HighFeeWarning = (props: WarningProps) => {
 
   const { isHighFee, feePercentage } = useHighFeeWarning(trade)
   const level = useSafeMemo(() => _getWarningInfo(feePercentage), [feePercentage])
-
   if (!isHighFee) return null
 
   return (

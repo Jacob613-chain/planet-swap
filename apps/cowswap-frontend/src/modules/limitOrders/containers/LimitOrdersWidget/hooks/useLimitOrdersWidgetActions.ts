@@ -35,7 +35,6 @@ export function useLimitOrdersWidgetActions(): TradeWidgetActions {
       const value = tryParseCurrencyAmount(typedValue, currency) || null
 
       changeSwapAmountAnalytics(field, Number(typedValue))
-
       updateCurrencyAmount({
         activeRate,
         amount: value,

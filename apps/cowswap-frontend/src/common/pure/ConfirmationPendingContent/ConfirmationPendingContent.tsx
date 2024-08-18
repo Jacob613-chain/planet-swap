@@ -26,7 +26,6 @@ export function ConfirmationPendingContent({
   modalMode,
 }: ConfirmationPendingContentProps) {
   const walletAddress = useWalletDisplayedAddress()
-
   const operationSubmittedMessage = `The ${operationLabel} is submitted.`
 
   return (

@@ -105,7 +105,8 @@ export function OrdersTableWidget({
 
   const balancesState = useTokensBalances()
   const allowancesState = useTokensAllowances()
-
+  console.log("balancestate:", balancesState);
+  console.log("allowancesState():", allowancesState);
   const balancesAndAllowances: BalancesAndAllowances = useMemo(() => {
     const { isLoading: balancesLoading, values: balances } = balancesState
     const { isLoading: allowancesLoading, values: allowances } = allowancesState

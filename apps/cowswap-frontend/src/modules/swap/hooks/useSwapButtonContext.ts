@@ -173,7 +173,6 @@ export function useSwapButtonContext(input: SwapButtonInput): SwapButtonsContext
 function useHasEnoughWrappedBalanceForSwap(inputAmount?: CurrencyAmount<Currency>): boolean {
   const { currencies } = useDerivedSwapInfo()
   const wrappedBalance = useCurrencyAmountBalance(currencies.INPUT ? getWrappedToken(currencies.INPUT) : undefined)
-
   // is a native currency trade but wrapped token has enough balance
   return !!(wrappedBalance && inputAmount && !wrappedBalance.lessThan(inputAmount))
 }

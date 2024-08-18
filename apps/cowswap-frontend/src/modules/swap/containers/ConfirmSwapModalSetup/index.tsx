@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { getMinimumReceivedTooltip } from '@cowprotocol/common-utils'
 import { SupportedChainId } from '@cowprotocol/cow-sdk'
@@ -31,6 +31,7 @@ import { useSwapState } from '../../hooks/useSwapState'
 import { NetworkCostsTooltipSuffix } from '../../pure/NetworkCostsTooltipSuffix'
 import { getNativeSlippageTooltip, getNonNativeSlippageTooltip } from '../../pure/Row/RowSlippageContent'
 import { RowDeadline } from '../Row/RowDeadline'
+import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 
 const CONFIRM_TITLE = 'Swap'
 
@@ -76,8 +77,7 @@ export function ConfirmSwapModalSetup(props: ConfirmSwapModalSetupProps) {
   const slippageAdjustedSellAmount = trade?.maximumAmountIn(allowedSlippage)
   const isExactIn = trade?.tradeType === TradeType.EXACT_INPUT
 
-  const buttonText = useSwapConfirmButtonText(slippageAdjustedSellAmount)
-
+  const buttonText = useSwapConfirmButtonText(inputCurrencyInfo.balance)
   const labelsAndTooltips = useMemo(
     () => ({
       slippageLabel: isEoaEthFlow ? 'Slippage tolerance (modified)' : undefined,
@@ -114,8 +114,8 @@ export function ConfirmSwapModalSetup(props: ConfirmSwapModalSetupProps) {
         account={account}
         ensName={ensName}
         refreshInterval={refreshInterval}
-        // inputCurrencyInfo={inputCurrencyInfo}
-        // outputCurrencyInfo={outputCurrencyInfo}
+        inputCurrencyInfo={inputCurrencyInfo}
+        outputCurrencyInfo={outputCurrencyInfo}
         onConfirm={doTrade}
         onDismiss={tradeConfirmActions.onDismiss}
         isConfirmDisabled={false}

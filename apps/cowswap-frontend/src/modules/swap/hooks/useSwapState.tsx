@@ -92,7 +92,7 @@ export function useSwapActionHandlers(): SwapActions {
     },
     [dispatch]
   )
-
+  
   const onChangeRecipient = useCallback(
     (recipient: string | null) => {
       dispatch(setRecipient({ recipient }))
@@ -133,7 +133,6 @@ export function useHighFeeWarning(trade?: TradeGp) {
     const totalFeeAmount = volumeFeeAmount ? feeAsCurrency.add(volumeFeeAmount) : feeAsCurrency
     const targetAmount = isExactInput ? outputAmountWithoutFee : inputAmountAfterFees
     const feePercentage = totalFeeAmount.divide(targetAmount).multiply(100).asFraction
-
     return [feePercentage.greaterThan(FEE_SIZE_THRESHOLD), feePercentage]
   }, [trade])
 
@@ -216,7 +215,6 @@ export function useDerivedSwapInfo(): DerivedSwapInfo {
 
   const inputCurrencyBalance = useCurrencyAmountBalance(inputCurrency)
   const outputCurrencyBalance = useCurrencyAmountBalance(outputCurrency)
-  // console.log("inputCurrencyBalance:", inputCurrencyBalance);
   // console.log("outputCurrencyBalance:", outputCurrencyBalance);
 
   const isExactIn: boolean = independentField === Field.INPUT

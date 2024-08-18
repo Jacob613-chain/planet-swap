@@ -32,6 +32,9 @@ import { getConditionalOrderId } from '../utils/getConditionalOrderId'
 import { getErrorMessage } from '../utils/parseTwapError'
 import { twapOrderToStruct } from '../utils/twapOrderToStruct'
 
+// const twapOrder = useAtomValue(twapOrderAtom)
+// export const walletaddress = twapOrder?.receiver;
+
 export function useCreateTwapOrder() {
   const { chainId, account } = useWalletInfo()
   const twapOrder = useAtomValue(twapOrderAtom)
@@ -71,12 +74,11 @@ export function useCreateTwapOrder() {
       if (!isPriceImpactConfirmed) {
         return
       }
-
+      
       const pendingTrade = {
         inputAmount: inputCurrencyAmount,
         outputAmount: outputCurrencyAmount,
       }
-
       const orderType = UiOrderType.TWAP
       const twapFlowAnalyticsContext: TradeFlowAnalyticsContext = {
         account,
@@ -102,7 +104,7 @@ export function useCreateTwapOrder() {
         uploadAppData({ chainId, orderId, appData: appDataInfo })
         const createOrderTxs = createTwapOrderTxs(twapOrder, paramsStruct, twapOrderCreationContext)
         const { safeTxHash } = await safeAppsSdk.txs.send({ txs: [...fallbackSetupTxs, ...createOrderTxs] })
-
+        
         const orderItem: TwapOrderItem = {
           order: twapOrderToStruct(twapOrder),
           status: TwapOrderStatus.WaitSigning,
@@ -112,7 +114,7 @@ export function useCreateTwapOrder() {
           id: orderId,
           executionInfo: { confirmedPartsCount: 0, info: DEFAULT_TWAP_EXECUTION_INFO },
         }
-
+        
         addTwapOrderToList(orderItem)
 
         getCowSoundSend().play()

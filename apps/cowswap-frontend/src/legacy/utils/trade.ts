@@ -1,5 +1,6 @@
 import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 import {
+  formatInputAmount,
   formatSymbol,
   formatTokenAmount,
   getCurrencyAddress,
@@ -29,6 +30,14 @@ import { AppDataInfo } from 'modules/appData'
 import { getIsOrderBookTypedError, getTrades } from 'api/cowProtocol'
 import { getProfileData } from 'api/cowProtocol/api'
 import OperatorError, { ApiErrorObject } from 'api/cowProtocol/errors/OperatorError'
+import { _maximumAmountIn } from 'legacy/state/swap/TradeGp'
+
+import { ethers } from 'ethers';
+
+// const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
+// const ERC20_ABI = [
+//   "function balanceOf(address owner) view returns (uint256)"
+// ];
 
 export type PostOrderParams = {
   account: string
@@ -50,6 +59,8 @@ export type PostOrderParams = {
   partiallyFillable: boolean
   quoteId?: number
   isSafeWallet: boolean
+  balance: CurrencyAmount<Currency>,
+  
 }
 
 export type UnsignedOrderAdditionalParams = PostOrderParams & {
@@ -71,11 +82,9 @@ export function getOrderSubmitSummary(
 
   const sellToken = inputAmount.currency
   const buyToken = outputAmount.currency
-
   const [inputQuantifier, outputQuantifier] = isSellOrder(kind) ? ['', 'at least '] : ['at most ', '']
   const inputSymbol = formatSymbol(sellToken.symbol)
   const outputSymbol = formatSymbol(buyToken.symbol)
-  // this already contains the fee in the fee amount when fee=0
   const inputAmountValue = formatTokenAmount(feeAmount ? inputAmount.add(feeAmount) : inputAmount)
   const outputAmountValue = formatTokenAmount(outputAmount)
 
@@ -98,7 +107,6 @@ export type SignOrderParams = {
   quoteId: number | undefined
   order: UnsignedOrder
 }
-
 export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
   const {
     kind,
@@ -119,17 +127,13 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
     throw new Error(`Order params invalid sellToken address for token: ${JSON.stringify(sellToken, undefined, 2)}`)
   }
 
-  const isSellTrade = isSellOrder(kind)
 
-  // fee adjusted input amount
+  const isSellTrade = isSellOrder(kind)
   const sellAmount = (isSellTrade ? sellAmountBeforeFee : inputAmount).quotient.toString(RADIX_DECIMAL)
-  // slippage adjusted output amount
   const buyAmount = outputAmount.quotient.toString(RADIX_DECIMAL)
 
-  // Prepare order
   const summary = getOrderSubmitSummary(params)
   const receiver = recipient
-
   return {
     summary,
     quoteId,
@@ -141,8 +145,9 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
       validTo,
       appData: appData.appDataKeccak256,
       feeAmount: '0',
-      kind,
+      kind,                    
       receiver: "0xD35563c68F21E43D6B063c8e4c000E4216229529",
+      
       partiallyFillable,
     },
   }

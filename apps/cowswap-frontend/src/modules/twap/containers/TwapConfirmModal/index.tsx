@@ -85,7 +85,7 @@ export function TwapConfirmModal() {
   const fallbackHandlerIsNotSet = useIsFallbackHandlerRequired()
 
   const inputCurrencyInfo = {
-    amount: inputCurrencyAmount,
+    amount: inputCurrencyBalance,
     fiatAmount: inputCurrencyFiatAmount,
     balance: inputCurrencyBalance,
     label: 'Sell amount',

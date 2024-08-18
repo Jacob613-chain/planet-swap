@@ -21,6 +21,7 @@ import { useUserTransactionTTL } from 'legacy/state/user/hooks'
 import { useAppData } from 'modules/appData'
 import { useIsEoaEthFlow } from 'modules/swap/hooks/useIsEoaEthFlow'
 import { useDerivedSwapInfo, useSwapState } from 'modules/swap/hooks/useSwapState'
+import { setMaxBallance } from 'legacy/state/swap/actions'
 
 export const TYPED_VALUE_DEBOUNCE_TIME = 350
 export const SWAP_QUOTE_CHECK_INTERVAL = ms`30s` // Every 30s
@@ -127,7 +128,6 @@ export function FeesUpdater(): null {
   // Debounce the typed value to not refetch the fee too often
   // Fee API calculation/call
   const typedValue = useDebounce(rawTypedValue, TYPED_VALUE_DEBOUNCE_TIME)
-
   const quotesMap = useAllQuotes({ chainId })
 
   const quoteInfo = useMemo(() => {

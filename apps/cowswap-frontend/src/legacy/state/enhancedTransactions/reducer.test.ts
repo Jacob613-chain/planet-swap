@@ -15,16 +15,16 @@ describe('transaction reducer', () => {
       const beforeTime = new Date().getTime()
       const approval = { tokenAddress: 'abc', spender: 'def', amount: '0x1' }
 
-      store.dispatch(
-        addTransaction({
-          hash: '0x0',
-          hashType: HashType.ETHEREUM_TX,
-          chainId: 1,
-          summary: 'hello world',
-          approval,
-          from: 'abc',
-        })
-      )
+      // store.dispatch(
+      //   addTransaction({
+      //     hash: '0x0',
+      //     hashType: HashType.ETHEREUM_TX,
+      //     chainId: 1,
+      //     summary: 'hello world',
+      //     approval,
+      //     from: 'abc',
+      //   })
+      // )
       const txs = store.getState()
       expect(txs[1]).toBeTruthy()
       expect(txs[1]?.['0x0']).toBeTruthy()
@@ -59,16 +59,16 @@ describe('transaction reducer', () => {
       expect(store.getState()).toEqual({})
     })
     it('sets receipt', () => {
-      store.dispatch(
-        addTransaction({
-          hash: '0x0',
-          hashType: HashType.ETHEREUM_TX,
-          chainId: 4,
-          approval: { spender: '0x0', tokenAddress: '0x0', amount: '0x1' },
-          summary: 'hello world',
-          from: '0x0',
-        })
-      )
+      // store.dispatch(
+      //   addTransaction({
+      //     hash: '0x0',
+      //     hashType: HashType.ETHEREUM_TX,
+      //     chainId: 4,
+      //     approval: { spender: '0x0', tokenAddress: '0x0', amount: '0x1' },
+      //     summary: 'hello world',
+      //     from: '0x0',
+      //   })
+      // )
       const beforeTime = new Date().getTime()
       store.dispatch(
         finalizeTransaction({
@@ -114,16 +114,16 @@ describe('transaction reducer', () => {
       expect(store.getState()).toEqual({})
     })
     it('sets lastCheckedBlockNumber', () => {
-      store.dispatch(
-        addTransaction({
-          hash: '0x0',
-          hashType: HashType.ETHEREUM_TX,
-          chainId: 4,
-          approval: { spender: '0x0', tokenAddress: '0x0', amount: '0x1' },
-          summary: 'hello world',
-          from: '0x0',
-        })
-      )
+      // store.dispatch(
+      //   addTransaction({
+      //     hash: '0x0',
+      //     hashType: HashType.ETHEREUM_TX,
+      //     chainId: 4,
+      //     approval: { spender: '0x0', tokenAddress: '0x0', amount: '0x1' },
+      //     summary: 'hello world',
+      //     from: '0x0',
+      //   })
+      // )
       store.dispatch(
         checkedTransaction({
           chainId: 4,
@@ -135,16 +135,16 @@ describe('transaction reducer', () => {
       expect(tx?.lastCheckedBlockNumber).toEqual(1)
     })
     it('never decreases', () => {
-      store.dispatch(
-        addTransaction({
-          hash: '0x0',
-          hashType: HashType.ETHEREUM_TX,
-          chainId: 4,
-          approval: { spender: '0x0', tokenAddress: '0x0', amount: '0x1' },
-          summary: 'hello world',
-          from: '0x0',
-        })
-      )
+      // store.dispatch(
+      //   addTransaction({
+      //     hash: '0x0',
+      //     hashType: HashType.ETHEREUM_TX,
+      //     chainId: 4,
+      //     approval: { spender: '0x0', tokenAddress: '0x0', amount: '0x1' },
+      //     summary: 'hello world',
+      //     from: '0x0',
+      //   })
+      // )
       store.dispatch(
         checkedTransaction({
           chainId: 4,
@@ -166,26 +166,26 @@ describe('transaction reducer', () => {
 
   describe('clearAllTransactions', () => {
     it('removes all transactions for the chain', () => {
-      store.dispatch(
-        addTransaction({
-          hash: '0x0',
-          hashType: HashType.ETHEREUM_TX,
-          chainId: 1,
-          summary: 'hello world',
-          approval: { tokenAddress: 'abc', spender: 'def', amount: '0x1' },
-          from: 'abc',
-        })
-      )
-      store.dispatch(
-        addTransaction({
-          hash: '0x1',
-          hashType: HashType.ETHEREUM_TX,
-          chainId: 4,
-          summary: 'hello world',
-          approval: { tokenAddress: 'abc', spender: 'def', amount: '0x1' },
-          from: 'abc',
-        })
-      )
+      // store.dispatch(
+      //   addTransaction({
+      //     hash: '0x0',
+      //     hashType: HashType.ETHEREUM_TX,
+      //     chainId: 1,
+      //     summary: 'hello world',
+      //     approval: { tokenAddress: 'abc', spender: 'def', amount: '0x1' },
+      //     from: 'abc',
+      //   })
+      // )
+      // store.dispatch(
+      //   addTransaction({
+      //     hash: '0x1',
+      //     hashType: HashType.ETHEREUM_TX,
+      //     chainId: 4,
+      //     summary: 'hello world',
+      //     approval: { tokenAddress: 'abc', spender: 'def', amount: '0x1' },
+      //     from: 'abc',
+      //   })
+      // )
       expect(Object.keys(store.getState())).toHaveLength(2)
       expect(Object.keys(store.getState())).toEqual([String(1), String(4)])
       expect(Object.keys(store.getState()[1] ?? {})).toEqual(['0x0'])

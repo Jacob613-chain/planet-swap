@@ -78,7 +78,6 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
   const disabled = !!props.disabled || isChainIdUnsupported
   const viewAmount = formatInputAmount(amount, balance, isIndependent)
   const [typedValue, setTypedValue] = useState(viewAmount)
-
   const onUserInputDispatch = useCallback(
     (typedValue: string) => {
       setTypedValue(typedValue)
@@ -94,7 +93,6 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
     onUserInputDispatch(maxBalance.toExact())
     setMaxSellTokensAnalytics()
   }, [maxBalance, onUserInputDispatch])
-
   useEffect(() => {
     const areValuesSame = parseFloat(viewAmount) === parseFloat(typedValue)
 
@@ -108,13 +106,11 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
     // We don't need triggering from typedValue changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewAmount])
-
   const selectedTokenAddress = currency
     ? getIsNativeToken(currency)
       ? NATIVE_CURRENCIES[currency.chainId as SupportedChainId].address
       : currency.address
     : undefined
-
   const numericalInput = (
     <styledEl.NumericalInput
       className="token-amount-input"

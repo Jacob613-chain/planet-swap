@@ -388,7 +388,7 @@ export function getOrderVolumeFee(
 export function getOrderLimitPriceWithPartnerFee(order: Order | ParsedOrder): Price<Currency, Currency> {
   const inputAmount = CurrencyAmount.fromRawAmount(order.inputToken, order.sellAmount.toString())
   const outputAmount = CurrencyAmount.fromRawAmount(order.outputToken, order.buyAmount.toString())
-
+  // console.log("inputAmount:", inputAmount);
   const { inputCurrencyAmount, outputCurrencyAmount } = getOrderAmountsWithPartnerFee(
     order.fullAppData,
     inputAmount,

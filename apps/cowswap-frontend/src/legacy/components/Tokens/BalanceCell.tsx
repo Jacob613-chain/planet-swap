@@ -9,6 +9,7 @@ import { BalanceValue } from './styled'
 type BalanceCellProps = {
   balance: CurrencyAmount<Token> | undefined
 }
+  // console.log("balance:", {balance} );
 
 export default function BalanceCell({ balance }: BalanceCellProps) {
   const { account } = useWalletInfo()
@@ -18,7 +19,6 @@ export default function BalanceCell({ balance }: BalanceCellProps) {
   if (!balance) {
     return account ? <Loader stroke={theme.info} /> : <BalanceValue hasBalance={false}>0</BalanceValue>
   }
-  // console.log("balance:", balance );
   return (
     <BalanceValue hasBalance={!!hasBalance}>
       <TokenAmount amount={balance} />
