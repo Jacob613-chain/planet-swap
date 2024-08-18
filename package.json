@@ -309,7 +309,6 @@
     "jsdom": "~22.1.0",
     "node-stdlib-browser": "^1.2.0",
     "nx": "18.3.4",
-    "nx-cloud": "latest",
     "patch-package": "^8.0.0",
     "prettier": "^2.6.2",
     "react-cosmos": "^6.1.1",
