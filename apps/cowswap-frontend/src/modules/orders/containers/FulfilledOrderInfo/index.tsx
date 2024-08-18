@@ -43,7 +43,6 @@ export function FulfilledOrderInfo({ chainId, orderUid }: ExecutedSummaryProps) 
           outputToken={formattedSwappedAmount.currency as TokenInfo}
           sellAmount={formattedFilledAmount.quotient.toString()}
           buyAmount={formattedSwappedAmount.quotient.toString()}
-          customTemplate={FulfilledSummaryTemplate}
         />
       )}
       {!!surplusAmount && (

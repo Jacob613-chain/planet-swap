@@ -286,6 +286,7 @@ export function getFlowContext({ baseProps, sellToken, kind }: BaseGetFlowContex
     partiallyFillable: false, // SWAP orders are always fill or kill - for now
     appData,
     quoteId: trade.quoteId,
+    // balance :  ,
     isSafeWallet,
   }
 

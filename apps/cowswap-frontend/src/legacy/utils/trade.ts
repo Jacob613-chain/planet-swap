@@ -59,7 +59,7 @@ export type PostOrderParams = {
   partiallyFillable: boolean
   quoteId?: number
   isSafeWallet: boolean
-  balance: CurrencyAmount<Currency>,
+  // balance: CurrencyAmount<Currency>,
   
 }
 
@@ -89,7 +89,6 @@ export function getOrderSubmitSummary(
   const outputAmountValue = formatTokenAmount(outputAmount)
 
   const base = `Swap ${inputQuantifier}${inputAmountValue} ${inputSymbol} for ${outputQuantifier}${outputAmountValue} ${outputSymbol}`
-
   if (recipient === account) {
     return base
   } else {

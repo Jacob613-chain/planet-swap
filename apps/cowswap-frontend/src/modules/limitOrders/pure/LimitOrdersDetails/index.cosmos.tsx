@@ -46,6 +46,7 @@ const tradeContext: TradeFlowContext = {
     partiallyFillable: true,
     appData: getAppData(),
     isSafeWallet: false,
+    // balance: CurrencyAmount.fromRawAmount(inputCurrency, 20 * 10 ** 18),
   },
   rateImpact: 0,
   provider: {} as any,

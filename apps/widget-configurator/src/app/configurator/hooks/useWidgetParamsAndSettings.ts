@@ -2,18 +2,17 @@ import { useMemo } from 'react'
 
 import type { CowSwapWidgetParams } from '@cowprotocol/widget-lib'
 
-import { isDev, isLocalHost, isVercel } from '../../../env'
+// import { isDev, isLocalHost, isVercel } from '../../../env'
 import { ConfiguratorState } from '../types'
 
 const getBaseUrl = (): string => {
   if (typeof window === 'undefined' || !window) return ''
 
-  if (isLocalHost) return 'http://localhost:3000'
-  if (isDev) return 'https://planetswap.org'
-  if (isVercel) {
-    // const prKey = window.location.hostname.replace('planetswap.org', '')
-    return `https://planetswap.org`
-  }
+  // if (isLocalHost) return 'http://localhost:3000'
+  // if (isDev) return 'https://planetswap.org'
+  // if (isVercel) {
+  //   return `https://planetswap.org`
+  // }
 
   return 'https://planetswap.org'
 }

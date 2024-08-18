@@ -2,9 +2,9 @@ import { parseBytes32String } from '@ethersproject/strings'
 
 import { formatSmart, safeTokenName, TokenErc20 } from '@gnosis.pm/dex-js'
 import BigNumber from 'bignumber.js'
-import { DEFAULT_DECIMALS, MINIMUM_ATOM_VALUE, ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER, TEN_BIG_NUMBER } from 'const'
+import { DEFAULT_DECIMALS, MINIMUM_ATOM_VALUE, ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER, TEN_BIG_NUMBER } from '../const'
 import { arrayify } from 'ethers/lib/utils'
-import { FormatAmountPrecision } from 'utils'
+import { FormatAmountPrecision } from '../utils/index'
 
 import {
   HIGH_PRECISION_DECIMALS,
@@ -31,16 +31,16 @@ export function makeMultipleOf(mult = 5, value?: number | string | null): number
   const numValue = Number(value)
 
   if (numValue === 0 || !value || isNaN(numValue)) return 0
-  if (!(numValue % mult) || cache[numValue]) return numValue
+  // if (!(numValue % mult) || cache[numValue]) return numValue
 
   const remainder = numValue % mult
 
   let finalVal
   if (remainder > mult / 2) {
-    cache[numValue] = numValue
+    // cache[numValue] = numValue
     finalVal = numValue - remainder + mult
   } else {
-    cache[numValue] = numValue
+    // cache[numValue] = numValue
     finalVal = numValue - remainder
   }
 
