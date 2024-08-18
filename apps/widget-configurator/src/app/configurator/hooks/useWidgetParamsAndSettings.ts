@@ -11,8 +11,8 @@ const getBaseUrl = (): string => {
   if (isLocalHost) return 'http://localhost:3000'
   if (isDev) return 'https://planetswap.org'
   if (isVercel) {
-    const prKey = window.location.hostname.replace('planetswap.org', '')
-    return `https://swap-dev-git-${prKey}-cowswap.vercel.app`
+    // const prKey = window.location.hostname.replace('planetswap.org', '')
+    return `https://planetswap.org`
   }
 
   return 'https://planetswap.org'
