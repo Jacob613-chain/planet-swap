@@ -4,14 +4,14 @@
         "src": "apps/cowswap-frontend/**",
         "use": "@vercel/node",
         "config": {
-          "distDir": "dist/apps/cowswap-frontend"
+          "distDir": "dist/apps/planet-swap"
         }
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "dist/apps/cowswap-frontend/$1"
+        "dest": "dist/apps/planet-swap/$1"
       }
     ]
   }
