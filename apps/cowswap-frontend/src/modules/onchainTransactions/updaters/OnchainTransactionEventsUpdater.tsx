@@ -7,15 +7,15 @@ import {
   OnTransactionPayload,
   ToastMessageType,
 } from '@cowprotocol/events'
-import { useAddSnackbar } from '@cowprotocol/snackbars'
+// import { useAddSnackbar } from '@cowprotocol/snackbars'
 
 import { EVENT_EMITTER } from 'eventEmitter'
 
-import { TransactionContentWithLink } from 'modules/orders'
+// import { TransactionContentWithLink } from 'modules/orders'
 import { getCowSoundError } from 'modules/sounds'
 
 export function OnchainTransactionEventsUpdater() {
-  const addSnackbar = useAddSnackbar()
+  // const addSnackbar = useAddSnackbar()
 
   useEffect(() => {
     const listener: CowEventListener<CowEvents> = {
@@ -25,15 +25,14 @@ export function OnchainTransactionEventsUpdater() {
         const isSuccess = receipt.status === 1 && receipt.replacementType !== 'cancel'
 
         // Display a snackbar in CowSwap UI
-        addSnackbar({
-          content: (
-            <TransactionContentWithLink transactionHash={receipt.transactionHash}>
-              {/* <>{summary}</> */}
-            </TransactionContentWithLink>
-          ),
-          id: receipt.transactionHash,
-          icon: isSuccess ? 'success' : 'alert',
-        })
+        // addSnackbar({
+        //   content: (
+        //     <TransactionContentWithLink transactionHash={receipt.transactionHash}>
+        //     </TransactionContentWithLink>
+        //   ),
+        //   id: receipt.transactionHash,
+        //   icon: isSuccess ? 'success' : 'alert',
+        // })
 
         // Emit a toast message
         EVENT_EMITTER.emit(CowEvents.ON_TOAST_MESSAGE, {
@@ -57,7 +56,7 @@ export function OnchainTransactionEventsUpdater() {
     return () => {
       EVENT_EMITTER.off(listener)
     }
-  }, [addSnackbar])
+  })
 
   return null
 }

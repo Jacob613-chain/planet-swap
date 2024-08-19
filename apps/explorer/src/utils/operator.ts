@@ -4,9 +4,9 @@ import { Trade as TradeMetaData } from '@cowprotocol/cow-sdk'
 import { calculatePrice, invertPrice, TokenErc20 } from '@gnosis.pm/dex-js'
 import BigNumber from 'bignumber.js'
 import { ZERO_BIG_NUMBER } from 'const'
-import { formatSmartMaxPrecision, formattingAmountPrecision } from 'utils'
+import { formatSmartMaxPrecision, formattingAmountPrecision } from '../utils/index'
 
-import { Order, OrderStatus, RawOrder, Trade } from 'api/operator/types'
+import { Order, OrderStatus, RawOrder, Trade } from '../../src/api/operator/types'
 
 import { PENDING_ORDERS_BUFFER } from '../explorer/const'
 
@@ -333,15 +333,13 @@ export function isTokenErc20(token: TokenErc20 | null | undefined): token is Tok
 }
 
 export enum FormatAmountPrecision {
-  middlePrecision,
-  highPrecision,
   maxPrecision,
 }
 
 export function formattedAmount(
   erc20: TokenErc20 | null | undefined,
   amount: BigNumber,
-  typePrecision: FormatAmountPrecision = FormatAmountPrecision.maxPrecision
+  typePrecision: FormatAmountPrecision = FormatAmountPrecision.maxPrecision 
 ): string {
   if (!isTokenErc20(erc20)) return '-'
 

@@ -4,7 +4,7 @@ import { formatSmart, safeTokenName, TokenErc20 } from '@gnosis.pm/dex-js'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_DECIMALS, MINIMUM_ATOM_VALUE, ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER, TEN_BIG_NUMBER } from '../const'
 import { arrayify } from 'ethers/lib/utils'
-import { FormatAmountPrecision } from '../utils/index'
+// import { FormatAmountPrecision } from '../utils/operator'
 
 import {
   HIGH_PRECISION_DECIMALS,
@@ -31,7 +31,7 @@ export function makeMultipleOf(mult = 5, value?: number | string | null): number
   const numValue = Number(value)
 
   if (numValue === 0 || !value || isNaN(numValue)) return 0
-  // if (!(numValue % mult) || cache[numValue]) return numValue
+  if (!(numValue % mult)) return numValue
 
   const remainder = numValue % mult
 
@@ -274,22 +274,43 @@ export function formatExecutedPriceToDisplay(
  * @param amount BigNumber integer amount
  * @param token Erc20 token
  */
+// export function formattingAmountPrecision(
+//   amount: BigNumber,
+//   token: TokenErc20 | null,
+//   typePrecision: FormatAmountPrecision
+// ): string {
+//   const typeFormatPrecision = {
+//     [FormatAmountPrecision.highPrecision]: HIGH_PRECISION_DECIMALS,
+//     [FormatAmountPrecision.middlePrecision]: MIDDLE_PRECISION_DECIMALS,
+//   }
+//   return formatSmart({
+//     amount: amount.toString(10),
+//     precision: token?.decimals || 0,
+//     decimals: typeFormatPrecision[typePrecision],
+//     smallLimit: getMinimumRepresentableValue(typeFormatPrecision[typePrecision]),
+//   })
+// }
+
+type FormatAmountPrecision = 'highPrecision' | 'middlePrecision';
+
+const typeFormatPrecision: { [key in FormatAmountPrecision]: number } = {
+  highPrecision: HIGH_PRECISION_DECIMALS,
+  middlePrecision: MIDDLE_PRECISION_DECIMALS,
+}
+
 export function formattingAmountPrecision(
   amount: BigNumber,
   token: TokenErc20 | null,
   typePrecision: FormatAmountPrecision
 ): string {
-  const typeFormatPrecision = {
-    [FormatAmountPrecision.highPrecision]: HIGH_PRECISION_DECIMALS,
-    [FormatAmountPrecision.middlePrecision]: MIDDLE_PRECISION_DECIMALS,
-  }
   return formatSmart({
     amount: amount.toString(10),
     precision: token?.decimals || 0,
     decimals: typeFormatPrecision[typePrecision],
     smallLimit: getMinimumRepresentableValue(typeFormatPrecision[typePrecision]),
-  })
+  });
 }
+
 
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
