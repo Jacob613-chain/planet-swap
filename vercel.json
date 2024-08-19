@@ -1,0 +1,17 @@
+{
+    "builds": [
+      {
+        "src": "apps/cowswap-frontend/**",
+        "use": "@vercel/node",
+        "config": {
+          "distDir": "dist/apps/cowswap-frontend"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "dist/apps/cowswap-frontend/$1"
+      }
+    ]
+  }

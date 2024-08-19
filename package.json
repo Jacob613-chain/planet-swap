@@ -17,7 +17,7 @@
     "start:cowfi": "PORT=3001 nx run cow-fi:dev",
     "build": "yarn run build:cowswap",
     "build:all": "nx run-many -t build",
-    "build:cowswap": "nx build cowswap-frontend",
+    "build:cowswap": "npx nx build cowswap-frontend",
     "build:explorer": "nx build explorer",
     "build:widget": "nx build widget-configurator",
     "build:cowfi": "nx build cow-fi && yarn postbuild:cowfi",
