@@ -34,9 +34,9 @@ export function ReceiveAmount(props: ReceiveAmountProps) {
         <styledEl.QuestionHelperWrapped text={<ReceiveAmountInfoTooltip {...props} />} />
       </div>
       <div>
-        <styledEl.ReceiveAmountValue title={title}>
+        {/* <styledEl.ReceiveAmountValue title={title}>
           <TokenAmount amount={amountAfterFees} defaultValue="0" />
-        </styledEl.ReceiveAmountValue>
+        </styledEl.ReceiveAmountValue> */}
       </div>
     </styledEl.ReceiveAmountBox>
   )

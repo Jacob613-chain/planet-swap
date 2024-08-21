@@ -119,7 +119,7 @@ export function TradeBasicConfirmDetails(props: Props) {
       <DividerHorizontal />
 
       {/* Slippage */}
-      {
+      {/* {
         <ReviewOrderModalAmountRow
           withTimelineDot={withTimelineDot}
           tooltip={slippageTooltip}
@@ -128,7 +128,7 @@ export function TradeBasicConfirmDetails(props: Props) {
         >
           <PercentDisplay percent={slippage.toFixed(2)} />
         </ReviewOrderModalAmountRow>
-      }
+      } */}
 
       {/* Min received */}
       <ReviewOrderModalAmountRow

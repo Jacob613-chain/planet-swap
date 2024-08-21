@@ -151,7 +151,7 @@ export function TradeConfirmation(props: TradeConfirmationProps) {
         {/* </styledEl.AmountsPreviewContainer> */}
         {children}
         {/*Banners*/}
-        {showRecipientWarning && <CustomRecipientWarningBanner orientation={BannerOrientation.Horizontal} />}
+        {/* {showRecipientWarning && <CustomRecipientWarningBanner orientation={BannerOrientation.Horizontal} />} */}
         {/* {isPriceChanged && !isPriceStatic && <PriceUpdatedBanner onClick={resetPriceChanged} />} */}
         <ButtonPrimary onClick={handleConfirmClick}  buttonSize={ButtonSize.BIG}>
           {hasPendingTrade ? (

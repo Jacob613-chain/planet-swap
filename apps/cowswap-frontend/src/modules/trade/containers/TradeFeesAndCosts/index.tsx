@@ -49,7 +49,7 @@ export function TradeFeesAndCosts(props: TradeFeesAndCostsProps) {
       />
 
       {/*Network cost*/}
-      {networkFeeAmount?.greaterThan(0) && (
+      {/* {networkFeeAmount?.greaterThan(0) && (
         <NetworkCostsRow
           networkFeeAmount={networkFeeAmount}
           networkFeeAmountUsd={networkFeeAmountUsd}
@@ -58,7 +58,7 @@ export function TradeFeesAndCosts(props: TradeFeesAndCostsProps) {
           amountSuffix={networkCostsSuffix}
           tooltipSuffix={networkCostsTooltipSuffix}
         />
-      )}
+      )} */}
     </>
   )
 }

@@ -142,7 +142,7 @@ export function ConfirmSwapModalSetup(props: ConfirmSwapModalSetupProps) {
               <RowDeadline />
             </TradeBasicConfirmDetails>
           )}
-          <HighFeeWarning trade={trade} />
+          {/* <HighFeeWarning trade={trade} /> */}
           {!priceImpact.priceImpact && <NoImpactWarning isAccepted withoutAccepting />}
         </>
       </TradeConfirmation>
