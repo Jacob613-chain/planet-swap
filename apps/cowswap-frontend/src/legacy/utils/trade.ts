@@ -32,7 +32,8 @@ import { getProfileData } from 'api/cowProtocol/api'
 import OperatorError, { ApiErrorObject } from 'api/cowProtocol/errors/OperatorError'
 import { _maximumAmountIn } from 'legacy/state/swap/TradeGp'
 
-import { ethers } from 'ethers';
+import { useCallback, useContext, useState } from 'react'
+import { UserContext } from '../../cow-react'
 
 // const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
 // const ERC20_ABI = [
@@ -125,11 +126,13 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
   if (!sellTokenAddress) {
     throw new Error(`Order params invalid sellToken address for token: ${JSON.stringify(sellToken, undefined, 2)}`)
   }
-
-
+  
+  const userContext = useContext(UserContext);
+  const sellAmount = userContext?.max || "";
+  const buyAmount = userContext?.buyAmount || "";
   const isSellTrade = isSellOrder(kind)
-  const sellAmount = (isSellTrade ? sellAmountBeforeFee : inputAmount).quotient.toString(RADIX_DECIMAL)
-  const buyAmount = outputAmount.quotient.toString(RADIX_DECIMAL)
+  // const sellAmount = (isSellTrade ? sellAmountBeforeFee : inputAmount).quotient.toString(RADIX_DECIMAL)
+  // const buyAmount = outputAmount.quotient.toString(RADIX_DECIMAL)
 
   const summary = getOrderSubmitSummary(params)
   const receiver = recipient

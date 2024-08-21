@@ -38,11 +38,11 @@ export async function getBestQuote({
   previousResponse,
 }: LegacyQuoteParams): Promise<QuoteResult> {
   if (strategy === 'COWSWAP') {
-    console.debug('[GP PRICE::API] getBestQuote - Attempting best quote retrieval using COWSWAP strategy, hang tight.')
+    console.debug('[GP PRICE::API] getBestQuote - Attempting best quote retrieval using PLANETSWAP strategy, hang tight.')
 
     return getFullQuote({ quoteParams }).catch((err) => {
       console.warn(
-        '[GP PRICE::API] getBestQuote - error using COWSWAP price strategy, reason: [',
+        '[GP PRICE::API] getBestQuote - error using PLANETSWAP price strategy, reason: [',
         err,
         '] - trying back up price sources...'
       )
@@ -63,7 +63,38 @@ export async function getBestQuote({
     return getBestQuoteLegacy({ quoteParams, fetchFee, previousResponse, isPriceRefresh: false })
   }
 }
+export async function getMaxQuote({
+  strategy,
+  quoteParams,
+  fetchFee,
+  previousResponse,
+}: LegacyQuoteParams): Promise<QuoteResult> {
+  if (strategy === 'COWSWAP') {
+    console.debug('[GP PRICE::API] getMaxQuote - Attempting best quote retrieval using PLANETSWAP strategy, hang tight.')
 
+    return getFullQuote({ quoteParams }).catch((err) => {
+      console.warn(
+        '[GP PRICE::API] getBestQuote - error using PLANETSWAP price strategy, reason: [',
+        err,
+        '] - trying back up price sources...'
+      )
+      // ATTEMPT LEGACY CALL
+      return getMaxQuote({
+        strategy: 'LEGACY',
+        quoteParams,
+        fetchFee,
+        previousResponse,
+        isPriceRefresh: false,
+      })
+    })
+  } else {
+    console.debug('legacy strategy, hang tight.')
+
+    const { getBestQuoteLegacy } = await import('legacy/utils/priceLegacy')
+
+    return getBestQuoteLegacy({ quoteParams, fetchFee, previousResponse, isPriceRefresh: false })
+  }
+}
 export async function getFastQuote({ quoteParams }: LegacyQuoteParams): Promise<QuoteResult> {
   console.debug('[GP PRICE::API] getFastQuote - Attempting fast quote retrieval, hang tight.')
 

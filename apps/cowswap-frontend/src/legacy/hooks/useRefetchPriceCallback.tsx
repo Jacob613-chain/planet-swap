@@ -1,4 +1,5 @@
-import { useCallback } from 'react'
+import { useCallback, useContext, useState } from 'react'
+import {UserContext} from '../../cow-react';
 
 import { isOnline } from '@cowprotocol/common-hooks'
 import {
@@ -17,7 +18,7 @@ import { useQuoteDispatchers } from 'legacy/state/price/hooks'
 import { QuoteInformationObject } from 'legacy/state/price/reducer'
 import { LegacyFeeQuoteParams, LegacyQuoteParams } from 'legacy/state/price/types'
 import { useUserTransactionTTL } from 'legacy/state/user/hooks'
-import { getBestQuote, getFastQuote, QuoteResult } from 'legacy/utils/price'
+import { getBestQuote, getFastQuote, getMaxQuote, QuoteResult } from 'legacy/utils/price'
 
 import { useIsEoaEthFlow } from 'modules/swap/hooks/useIsEoaEthFlow'
 
@@ -35,7 +36,6 @@ interface HandleQuoteErrorParams {
 }
 
 type QuoteParamsForFetching = Omit<LegacyQuoteParams, 'strategy'>
-
 function handleQuoteError({ quoteData, error, addUnsupportedToken }: HandleQuoteErrorParams): QuoteError {
   if (isValidOperatorError(error)) {
     switch (error.type) {
@@ -118,6 +118,7 @@ const getFastQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getFastQuo
  * @returns callback that fetches a new quote and update the state
  */
 export function useRefetchQuoteCallback() {
+  
   const getIsUnsupportedToken = useIsUnsupportedToken()
   // dispatchers
   const { getNewQuote, refreshQuote, updateQuote, setQuoteError } = useQuoteDispatchers()
@@ -156,7 +157,6 @@ export function useRefetchQuoteCallback() {
               amount: quoteResponse.quote.feeAmount,
             }
           : undefined
-
         quoteData = {
           ...quoteParams,
           response: quoteResponse,
@@ -231,6 +231,8 @@ export function useRefetchQuoteCallback() {
         strategy,
         quoteParams,
       }
+
+
       const fastQuoteParams = {
         quoteParams: {
           ...quoteParams,
@@ -245,13 +247,13 @@ export function useRefetchQuoteCallback() {
           .catch(handleError)
       }
 
-      // Get the best quote
       getBestQuoteResolveOnlyLastCall(bestQuoteParams)
         .then((res) => {
           handleResponse(res, true)
         })
         .catch(handleError)
     },
+    
     [
       isEoaEthFlow,
       deadline,
@@ -264,5 +266,42 @@ export function useRefetchQuoteCallback() {
       addUnsupportedToken,
       setQuoteError,
     ]
+  )
+}
+export function useRefetchQuoteMaxCallback() {
+  const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getMaxQuote)
+  const userContext = useContext(UserContext);
+
+  return useCallback(
+    async (params: QuoteParamsForFetching): Promise<{ sellAmount: string, buyAmount: string }> => {
+      const { quoteParams } = params
+      const strategy = useGetGpPriceStrategy()
+      const parames = params;
+      if (userContext?.max && !isNaN(Number(userContext.max))) {
+          parames.quoteParams.amount = userContext.max;
+      } else {
+          parames.quoteParams.amount = "0";
+      }
+      const maxQuoteParams = {
+        ...parames,
+        strategy,
+        quoteParams,
+      }
+
+      const result = await getMaxQuoteResolveOnlyLastCall(maxQuoteParams);
+
+      const sellAmount = userContext?.max || "0";
+      const buyAmount = result.data?.toString() || "0";
+      if (userContext) {
+        const {updateBuyAmount} = userContext;
+        updateBuyAmount(result.data?.toString() || "");
+      }
+      console.log("sellAmount", sellAmount, buyAmount)
+      return {
+        sellAmount,
+        buyAmount,
+      };
+    },
+    []
   )
 }

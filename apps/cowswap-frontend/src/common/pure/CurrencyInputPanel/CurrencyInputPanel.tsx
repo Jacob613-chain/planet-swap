@@ -89,23 +89,28 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
     if (!maxBalance) {
       return
     }
+  
+    const maxBalanceValue = maxBalance.toExact(); // Convert maxBalance to a string representation
+    setTypedValue(maxBalanceValue); // Set the typed value to max balance
+    onUserInput(field, maxBalanceValue); // Dispatch the max balance as the input value
+  
+    setMaxSellTokensAnalytics(); // Trigger any analytics related to max balance selection
+  }, [maxBalance, field, onUserInput]);
 
-    onUserInputDispatch(maxBalance.toExact())
-    setMaxSellTokensAnalytics()
-  }, [maxBalance, onUserInputDispatch])
-  useEffect(() => {
-    const areValuesSame = parseFloat(viewAmount) === parseFloat(typedValue)
+useEffect(() => {
+  const areValuesSame = parseFloat(viewAmount) === parseFloat(typedValue);
 
-    // Don't override typedValue when, for example: viewAmount = 5  and typedValue = 5.
-    if (areValuesSame) return
+  // Don't override typedValue when viewAmount and typedValue are the same
+  if (areValuesSame) return;
 
-    // Don't override typedValue, when viewAmount from props and typedValue are zero (0 or 0. or 0.000)
-    if (!viewAmount && (!typedValue || parseFloat(typedValue) === 0)) return
+  // Set typedValue to viewAmount, which will now always reflect the max balance if selected
+  setTypedValue(viewAmount);
 
-    setTypedValue(viewAmount)
-    // We don't need triggering from typedValue changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewAmount])
+  // We don't need to trigger from typedValue changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [viewAmount]);
+
+
   const selectedTokenAddress = currency
     ? getIsNativeToken(currency)
       ? NATIVE_CURRENCIES[currency.chainId as SupportedChainId].address
@@ -120,7 +125,6 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
       $loading={areCurrenciesLoading}
     />
   )
-
   const priceImpactParams: typeof _priceImpactParams = useMemo(() => {
     if (!_priceImpactParams) return undefined
 
@@ -177,6 +181,7 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
                 )}
               </styledEl.BalanceText>
             )}
+            
           </div>
           <div>
             {amount && (

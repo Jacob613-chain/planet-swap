@@ -7,7 +7,6 @@ import { OrderKind, PriceQuality } from '@cowprotocol/cow-sdk'
 import { useENSAddress } from '@cowprotocol/ens'
 import { useIsUnsupportedToken } from '@cowprotocol/tokens'
 import { useWalletInfo } from '@cowprotocol/wallet'
-
 import ms from 'ms.macro'
 
 import { useRefetchQuoteCallback } from 'legacy/hooks/useRefetchPriceCallback'
@@ -21,7 +20,6 @@ import { useUserTransactionTTL } from 'legacy/state/user/hooks'
 import { useAppData } from 'modules/appData'
 import { useIsEoaEthFlow } from 'modules/swap/hooks/useIsEoaEthFlow'
 import { useDerivedSwapInfo, useSwapState } from 'modules/swap/hooks/useSwapState'
-import { setMaxBallance } from 'legacy/state/swap/actions'
 
 export const TYPED_VALUE_DEBOUNCE_TIME = 350
 export const SWAP_QUOTE_CHECK_INTERVAL = ms`30s` // Every 30s
@@ -114,6 +112,7 @@ function isRefetchQuoteRequired(
 }
 
 export function FeesUpdater(): null {
+
   const { chainId, account } = useWalletInfo()
 
   const { independentField, typedValue: rawTypedValue, recipient } = useSwapState()
@@ -124,7 +123,6 @@ export function FeesUpdater(): null {
 
   const { address: ensRecipientAddress } = useENSAddress(recipient)
   const receiver = ensRecipientAddress || recipient
-
   // Debounce the typed value to not refetch the fee too often
   // Fee API calculation/call
   const typedValue = useDebounce(rawTypedValue, TYPED_VALUE_DEBOUNCE_TIME)
@@ -179,7 +177,6 @@ export function FeesUpdater(): null {
     const kind = independentField === Field.INPUT ? OrderKind.SELL : OrderKind.BUY
     const amount = tryParseCurrencyAmount(typedValue, (isSellOrder(kind) ? sellCurrency : buyCurrency) ?? undefined)
     if (!amount) return
-
     const fromDecimals = sellCurrency?.decimals ?? DEFAULT_DECIMALS
     const toDecimals = buyCurrency?.decimals ?? DEFAULT_DECIMALS
 

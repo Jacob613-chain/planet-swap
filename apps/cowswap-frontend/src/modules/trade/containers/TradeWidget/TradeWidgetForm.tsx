@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo , useContext} from 'react'
 
 import ICON_ORDERS from '@cowprotocol/assets/svg/orders.svg'
 import ICON_TOKENS from '@cowprotocol/assets/svg/tokens.svg'
@@ -38,7 +38,7 @@ import { TradeType } from '../../types'
 import { TradeWidgetLinks } from '../TradeWidgetLinks'
 import { WrapFlowActionButton } from '../WrapFlowActionButton'
 import { RADIX_DECIMAL } from '@cowprotocol/common-const'
-
+import { UserContext } from '../../../../cow-react'
 const ZERO_BANNER_STORAGE_KEY = 'limitOrdersZeroBalanceBanner:v0'
 
 const scrollToMyOrders = () => {
@@ -49,6 +49,9 @@ const scrollToMyOrders = () => {
 }
 
 export function TradeWidgetForm(props: TradeWidgetProps) {
+  const userContext = useContext(UserContext);
+
+  
   const isInjectedWidgetMode = isInjectedWidget()
   const { standaloneMode } = useInjectedWidgetParams()
 
@@ -90,6 +93,10 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
   const hasRecipientInUrl = !!tradeStateFromUrl.recipient
   const withRecipient = !isWrapOrUnwrap && (showRecipient || hasRecipientInUrl)
   const maxBalance = maxAmountSpend(inputCurrencyInfo.balance || undefined, isSafeWallet)
+  if (userContext) {
+    const {updateMax} = userContext;
+    updateMax(maxBalance?.quotient.toString(RADIX_DECIMAL) || "");
+  }
   const showSetMax = maxBalance?.greaterThan(0) && !inputCurrencyInfo.amount?.equalTo(maxBalance)
 
   const disablePriceImpact =

@@ -28,7 +28,15 @@ import { useInjectedWidgetParams } from 'modules/injectedWidget'
 
 import { WalletUnsupportedNetworkBanner } from '../common/containers/WalletUnsupportedNetworkBanner'
 import { BlockNumberProvider } from '../common/hooks/useBlockNumber'
+import {createContext, useState} from 'react'
+interface UserContextType {
+  max: string;
+  buyAmount : string;
+  updateMax: (max: string) => void;
+  updateBuyAmount: (max: string) => void;
+}
 
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 // Node removeChild hackaround
 // based on: https://github.com/facebook/react/issues/11538#issuecomment-417504600
 nodeRemoveChildFix()
@@ -38,9 +46,19 @@ if (window.ethereum) {
 }
 
 function Main() {
+  const [max, setMax] = useState<string>("0");
+  const [buyAmount, setBuyAmount] = useState<string>("0");
+  const updateMax = (newMax: string) => {
+    setMax(newMax);
+  };
+  const updateBuyAmount = (newBuyAmount: string) => {
+    setBuyAmount(newBuyAmount);
+  };
   return (
     <StrictMode>
       <Provider store={cowSwapStore}>
+      <UserContext.Provider value={{ max, updateMax, buyAmount, updateBuyAmount }}>
+
         <AtomProvider store={jotaiStore}>
           <HashRouter>
             <LanguageProvider>
@@ -52,7 +70,6 @@ function Main() {
                       <CowAnalyticsProvider cowAnalytics={cowAnalytics}>
                         <WalletUnsupportedNetworkBanner />
                         <Updaters />
-
                         <Toasts />
                         <App />
                       </CowAnalyticsProvider>
@@ -63,6 +80,7 @@ function Main() {
             </LanguageProvider>
           </HashRouter>
         </AtomProvider>
+        </UserContext.Provider>
       </Provider>
     </StrictMode>
   )
