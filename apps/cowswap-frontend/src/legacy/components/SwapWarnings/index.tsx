@@ -48,9 +48,9 @@ const WarningContainer = styled(AuxInformationContainer).attrs((props) => ({
 })) <HighFeeContainerProps>`
   --warningColor: ${({ theme, level }) =>
     level === HIGH_TIER_FEE
-      ? theme.danger
+      ? theme.alert
       : level === MEDIUM_TIER_FEE
-        ? theme.warning
+        ? theme.alert
         : LOW_TIER_FEE
           ? theme.alert
           : theme.info};
@@ -155,7 +155,7 @@ export const HighFeeWarning = (props: WarningProps) => {
     <WarningContainer {...props} level={level} isDarkMode={darkMode}>
       <div>
         <AlertTriangle size={24} />
-        Costs exceed {level}% of the swap amount!{' '}
+        Costs less than 0.3% of the swap amount!{' '}
         <HoverTooltip wrapInContainer content={<HighFeeWarningMessage feePercentage={feePercentage} />}>
           <ErrorStyledInfoIcon />
         </HoverTooltip>{' '}
@@ -164,7 +164,6 @@ export const HighFeeWarning = (props: WarningProps) => {
       {acceptWarningCb && (
         <WarningCheckboxContainer>
           <input id="fees-exceed-checkbox" type="checkbox" onChange={acceptWarningCb} checked={!!acceptedStatus} /> Swap
-          anyway
         </WarningCheckboxContainer>
       )}
     </WarningContainer>

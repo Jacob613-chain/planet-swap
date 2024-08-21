@@ -95,7 +95,7 @@ export function CurrencyInputPanel(props: CurrencyInputPanelProps) {
     onUserInput(field, maxBalanceValue); // Dispatch the max balance as the input value
   
     setMaxSellTokensAnalytics(); // Trigger any analytics related to max balance selection
-  }, [maxBalance, field, onUserInput]);
+  }, [typedValue, field, onUserInput]);
 
 useEffect(() => {
   const areValuesSame = parseFloat(viewAmount) === parseFloat(typedValue);
