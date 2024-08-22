@@ -76,7 +76,6 @@ export function ConfirmSwapModalSetup(props: ConfirmSwapModalSetupProps) {
 
   const slippageAdjustedSellAmount = trade?.maximumAmountIn(allowedSlippage)
   const isExactIn = trade?.tradeType === TradeType.EXACT_INPUT
-
   const buttonText = useSwapConfirmButtonText(inputCurrencyInfo.balance)
   const labelsAndTooltips = useMemo(
     () => ({

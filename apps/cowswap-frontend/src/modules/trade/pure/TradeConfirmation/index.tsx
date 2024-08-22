@@ -29,7 +29,6 @@ import { useIsSafeWallet } from '@cowprotocol/wallet'
 import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 
 const ONE_SEC = ms`1s`
-
 export interface TradeConfirmationProps {
   onConfirm(): void
 

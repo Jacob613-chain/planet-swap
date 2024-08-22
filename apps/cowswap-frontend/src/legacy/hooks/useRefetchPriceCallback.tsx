@@ -268,40 +268,77 @@ export function useRefetchQuoteCallback() {
     ]
   )
 }
-export function useRefetchQuoteMaxCallback() {
-  const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getMaxQuote)
-  const userContext = useContext(UserContext);
+// export function useRefetchQuoteMaxCallback() {
+//   const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getMaxQuote)
+//   const usersContext = useContext(UserContext);
 
-  return useCallback(
-    async (params: QuoteParamsForFetching): Promise<{ sellAmount: string, buyAmount: string }> => {
-      const { quoteParams } = params
-      const strategy = useGetGpPriceStrategy()
-      const parames = params;
-      if (userContext?.max && !isNaN(Number(userContext.max))) {
-          parames.quoteParams.amount = userContext.max;
-      } else {
-          parames.quoteParams.amount = "0";
-      }
-      const maxQuoteParams = {
-        ...parames,
-        strategy,
-        quoteParams,
-      }
+//   return useCallback(
+//     async (params: QuoteParamsForFetching): Promise<{ sellAmount: string, buyAmount: string }> => {
+//       const { quoteParams } = params
+//       const strategy = useGetGpPriceStrategy()
+//       const parames = params;
+//       if (usersContext?.max && !isNaN(Number(usersContext.max))) {
+//           parames.quoteParams.amount = usersContext.max;
+//       } else {
+//           parames.quoteParams.amount = "0";
+//       }
+//       const maxQuoteParams = {
+//         ...parames,
+//         strategy,
+//         quoteParams,
+//       }
+      
+//       const result = await getMaxQuoteResolveOnlyLastCall(maxQuoteParams);
 
-      const result = await getMaxQuoteResolveOnlyLastCall(maxQuoteParams);
+//       const sellAmount = usersContext?.max || "0";
+//       const buyAmount = result.data?.toString() || "0";
+//       if (usersContext) {
+//         const {updateBuyAmount} = usersContext;
+//         updateBuyAmount(result.data?.toString() || "");
+//       }
+//       console.log("sellAmount", sellAmount, buyAmount)
+//       return {
+//         sellAmount,
+//         buyAmount,
+//       };
+//     },
+//     []
+//   )
+// }
+// export function refetchQuoteMax(params: QuoteParamsForFetching) {
+//   const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast(getMaxQuote);
+//   const usersContext = useContext(UserContext);
 
-      const sellAmount = userContext?.max || "0";
-      const buyAmount = result.data?.toString() || "0";
-      if (userContext) {
-        const {updateBuyAmount} = userContext;
-        updateBuyAmount(result.data?.toString() || "");
-      }
-      console.log("sellAmount", sellAmount, buyAmount)
-      return {
-        sellAmount,
-        buyAmount,
-      };
-    },
-    []
-  )
-}
+//   return async () => {
+//     const { quoteParams } = params;
+//     const strategy = useGetGpPriceStrategy();
+//     if (usersContext?.max && !isNaN(Number(usersContext.max))) {
+//       quoteParams.amount = usersContext.max;
+//     } else {
+//       quoteParams.amount = "0";
+//     }
+
+//     const maxQuoteParams = {
+//       ...params,
+//       strategy,
+//       quoteParams,
+//     };
+
+//     const result = await getMaxQuoteResolveOnlyLastCall(maxQuoteParams);
+
+//     const sellAmount = usersContext?.max || "0";
+//     const buyAmount = result.data?.toString() || "0";
+
+//     // Update the buy amount in the user context if it exists
+//     if (usersContext) {
+//       const { updateBuyAmount } = usersContext;
+//       updateBuyAmount(result.data?.toString() || "");
+//     }
+
+//     // console.log("sellAmount", sellAmount, buyAmount);
+//     return {
+//       sellAmount,
+//       buyAmount,
+//     };
+//   };
+// }

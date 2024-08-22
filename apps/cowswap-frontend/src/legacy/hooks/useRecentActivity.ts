@@ -58,7 +58,6 @@ export function useRecentActivity(): TransactionAndOrder[] {
   const { chainId, account } = useWalletInfo()
   const allTransactions = useAllTransactions()
   const allNonEmptyOrders = useOrders(chainId, account, UiOrderType.SWAP)
-
   const recentOrdersAdjusted = useMemo<TransactionAndOrder[]>(() => {
     return (
       allNonEmptyOrders

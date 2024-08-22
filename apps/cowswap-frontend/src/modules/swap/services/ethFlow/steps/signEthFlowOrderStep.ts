@@ -11,6 +11,9 @@ import { logTradeFlow, logTradeFlowError } from 'modules/trade/utils/logger'
 
 import { GAS_LIMIT_DEFAULT } from 'common/constants/common'
 
+import { useContext } from 'react'
+import { UserContext } from '../../../../../cow-react'
+
 type EthFlowOrderParams = Omit<PostOrderParams, 'sellToken'> & {
   sellToken: NativeCurrency
 }
@@ -39,7 +42,6 @@ export async function signEthFlowOrderStep(
 
   const etherValue = orderParams.sellAmountBeforeFee
   const { order, quoteId, summary } = getSignOrderParams(orderParams)
-
   if (!quoteId) {
     throw new Error('[EthFlow::SignEthFlowOrderStep] No quoteId passed')
   }
@@ -76,7 +78,6 @@ export async function signEthFlowOrderStep(
   addInFlightOrderId(orderId)
 
   logTradeFlow('ETH FLOW', '[EthFlow::SignEthFlowOrderStep] Sent transaction onchain', orderId, txReceipt)
-
   return {
     txReceipt,
     order: mapUnsignedOrderToOrder({

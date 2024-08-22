@@ -42,7 +42,6 @@ export async function calculateUniqueOrderId(
   const { chainId } = orderParams
 
   const { order } = getSignOrderParams(orderParams)
-
   const { hashOrder, packOrderUidParams } = await import('@cowprotocol/contracts')
   const domain = await OrderSigningUtils.getDomain(chainId)
   // Different validTo when signing because EthFlow contract expects it to be max for all orders
@@ -70,7 +69,6 @@ export async function calculateUniqueOrderId(
   }
 
   logTradeFlow('ETH FLOW', '[calculateUniqueOrderId] ✅ Order Id is Unique' + orderId, logParams)
-
   return {
     orderId,
     orderParams,
