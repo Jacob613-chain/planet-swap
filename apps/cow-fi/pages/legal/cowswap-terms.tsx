@@ -32,7 +32,7 @@ export default function Page({ siteConfigData }: PageProps) {
   return (
     <Layout
       bgColor={Color.neutral90}
-      metaTitle="CoW Swap - Terms and Conditions"
+      metaTitle="Planet Swap - Terms and Conditions"
       metaDescription="Terms and Conditions for CoW"
     >
       <Wrapper>
@@ -767,7 +767,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
     props: {
       siteConfigData: {
         ...CONFIG,
-        title: 'CoW Swap Terms and Conditions',
+        title: 'Planet Swap Terms and Conditions',
         descriptionShort: 'Terms and Conditions',
       },
     },

@@ -42,10 +42,11 @@ export interface SwapButtonInput {
   impactWarningAccepted: boolean
   priceImpactParams: PriceImpact
   openNativeWrapModal(): void
+  maxBal: string
 }
 
 export function useSwapButtonContext(input: SwapButtonInput): SwapButtonsContext {
-  const { feeWarningAccepted, impactWarningAccepted, openNativeWrapModal, priceImpactParams } = input
+  const { feeWarningAccepted, impactWarningAccepted, openNativeWrapModal, priceImpactParams, maxBal } = input
 
   const { account, chainId } = useWalletInfo()
   const { isSupportedWallet } = useWalletDetails()
@@ -58,7 +59,7 @@ export function useSwapButtonContext(input: SwapButtonInput): SwapButtonsContext
     inputError: swapInputError,
   } = useDerivedSwapInfo()
   const toggleWalletModal = useToggleWalletModal()
-  const swapFlowContext = useSwapFlowContext()
+  const swapFlowContext = useSwapFlowContext(maxBal)
   const ethFlowContext = useEthFlowContext()
   const safeBundleApprovalFlowContext = useSafeBundleApprovalFlowContext()
   const safeBundleEthFlowContext = useSafeBundleEthFlowContext()
@@ -86,7 +87,7 @@ export function useSwapButtonContext(input: SwapButtonInput): SwapButtonsContext
   const wrapCallback = useWrapNativeFlow()
   const { state: approvalState } = useApproveState(slippageAdjustedSellAmount || null)
 
-  const handleSwap = useHandleSwap(priceImpactParams)
+  const handleSwap = useHandleSwap(priceImpactParams, maxBal)
 
   const contextExists = ethFlowContext || swapFlowContext || safeBundleApprovalFlowContext || safeBundleEthFlowContext
   const recipientAddressOrName = contextExists?.orderParams.recipientAddressOrName || null

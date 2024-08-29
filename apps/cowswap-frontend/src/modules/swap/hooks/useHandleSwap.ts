@@ -16,8 +16,8 @@ import { useSafeBundleEthFlowContext } from './useSafeBundleEthFlowContext'
 import { useSwapFlowContext } from './useSwapFlowContext'
 import { useSwapActionHandlers } from './useSwapState'
 
-export function useHandleSwap(priceImpactParams: PriceImpact): () => Promise<void> {
-  const swapFlowContext = useSwapFlowContext()
+export function useHandleSwap(priceImpactParams: PriceImpact, maxBal: string): () => Promise<void> {
+  const swapFlowContext = useSwapFlowContext(maxBal)
   const ethFlowContext = useEthFlowContext()
   const safeBundleApprovalFlowContext = useSafeBundleApprovalFlowContext()
   const safeBundleEthFlowContext = useSafeBundleEthFlowContext()
@@ -26,19 +26,23 @@ export function useHandleSwap(priceImpactParams: PriceImpact): () => Promise<voi
 
   return useCallback(async () => {
     if (!swapFlowContext && !ethFlowContext && !safeBundleApprovalFlowContext && !safeBundleEthFlowContext) return
-
+    
     const tradeResult = await (async () => {
       if (safeBundleApprovalFlowContext) {
         logTradeFlow('SAFE BUNDLE APPROVAL FLOW', 'Start safe bundle approval flow')
+        console.log("price1",priceImpactParams);
         return safeBundleApprovalFlow(safeBundleApprovalFlowContext, priceImpactParams, confirmPriceImpactWithoutFee)
       } else if (safeBundleEthFlowContext) {
         logTradeFlow('SAFE BUNDLE ETH FLOW', 'Start safe bundle eth flow')
+        console.log("price2",priceImpactParams);
         return safeBundleEthFlow(safeBundleEthFlowContext, priceImpactParams, confirmPriceImpactWithoutFee)
       } else if (swapFlowContext) {
         logTradeFlow('SWAP FLOW', 'Start swap flow')
         return swapFlow(swapFlowContext, priceImpactParams, confirmPriceImpactWithoutFee)
       } else if (ethFlowContext) {
         logTradeFlow('ETH FLOW', 'Start eth flow')
+        console.log("price4",priceImpactParams);
+
         return ethFlow(ethFlowContext, priceImpactParams, confirmPriceImpactWithoutFee)
       }
     })()

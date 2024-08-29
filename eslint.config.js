@@ -136,7 +136,7 @@ module.exports = [
     },
   },
 
-  // CoW Swap's rules
+  // Planet Swap's rules
   {
     files: ['apps/cowswap-frontend/**/*.{ts,tsx,js,jsx}'],
     rules: {

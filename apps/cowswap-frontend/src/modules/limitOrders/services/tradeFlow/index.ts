@@ -88,6 +88,7 @@ export async function tradeFlow(
       signer: provider.getSigner(),
       validTo,
     })
+    console.log("aaaaaaaaaaa2 ", order)
 
     logTradeFlow('LIMIT ORDER FLOW', 'STEP 5: add pending order step')
     addPendingOrderStep(

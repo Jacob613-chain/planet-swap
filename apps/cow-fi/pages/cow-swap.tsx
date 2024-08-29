@@ -60,20 +60,20 @@ export default function Page({ tweets }: PageProps) {
   return (
     <Layout
       bgColor={Color.neutral90}
-      metaTitle="CoW Swap - Don't worry, trade happy"
-      metaDescription="CoW Swap protects traders from the dangers of DeFi, so you can do what you want without needing to worry"
+      metaTitle="Planet Swap - Don't worry, trade happy"
+      metaDescription="Planet Swap protects traders from the dangers of DeFi, so you can do what you want without needing to worry"
       ogImage={CONFIG.ogImageCOWSWAPP}
     >
       <PageWrapper>
         <HeroContainer variant="secondary">
           <HeroContent variant="secondary">
-            <HeroSubtitle color={'#012F7A'}>CoW Swap</HeroSubtitle>
+            <HeroSubtitle color={'#012F7A'}>Planet Swap</HeroSubtitle>
             <HeroTitle>
               Don't worry,
               <br /> trade happy
             </HeroTitle>
             <HeroDescription>
-              CoW Swap protects traders from the dangers of DeFi, so you can do what you want without needing to worry
+            Planet Swap protects traders from the dangers of DeFi, so you can do what you want without needing to worry
             </HeroDescription>
             <Link
               bgColor={'#012F7A'}
@@ -130,9 +130,9 @@ export default function Page({ tweets }: PageProps) {
                 <SVG src={IMG_ICON_UNICORN} className="image-reverse" />
               </SectionTitleIcon>
 
-              <SectionTitleText>CoW Swap is different</SectionTitleText>
+              <SectionTitleText>Planet Swap is different</SectionTitleText>
               <SectionTitleDescription maxWidth={900} color={Color.neutral50}>
-                Unlike other exchanges, CoW Swap is built around frequent batch auctions, which are designed to find the
+                Unlike other exchanges, Planet Swap is built around frequent batch auctions, which are designed to find the
                 best liquidity at any point in time and protect you from MEV
               </SectionTitleDescription>
             </SectionTitleWrapper>
@@ -166,7 +166,7 @@ export default function Page({ tweets }: PageProps) {
               <SectionTitleIcon size={126}>
                 <SVG src={ICON_BULB} />
               </SectionTitleIcon>
-              <SectionTitleText>CoW Swap is the first user interface built on top of CoW Protocol</SectionTitleText>
+              <SectionTitleText>Planet Swap is the first user interface built on top of CoW Protocol</SectionTitleText>
               <SectionTitleDescription color={Color.neutral50}>
                 A powerful, open-source, and permissionless DEX aggregation protocol that anyone can integrate for a
                 variety of DeFi purposes
@@ -192,7 +192,7 @@ export default function Page({ tweets }: PageProps) {
               </SectionTitleIcon>
               <SectionTitleText>S-moooo-th trading</SectionTitleText>
               <SectionTitleDescription color={Color.neutral60}>
-                CoW Swap features the smoothest trading experiences in DeFi, allowing you to worry less and do more.
+              Planet Swap features the smoothest trading experiences in DeFi, allowing you to worry less and do more.
               </SectionTitleDescription>
             </SectionTitleWrapper>
 

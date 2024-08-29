@@ -74,6 +74,8 @@ export async function safeBundleApprovalFlow(
     const { id: orderId, order } = await signAndPostOrder(orderParams).finally(() => {
       callbacks.closeModals()
     })
+    console.log("aaaaaaaaaaa31 ", order)
+
 
     addPendingOrderStep(
       {

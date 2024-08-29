@@ -57,6 +57,9 @@ import { useTradeQuoteStateFromLegacy } from '../../hooks/useTradeQuoteStateFrom
 import { ConfirmSwapModalSetup } from '../ConfirmSwapModalSetup'
 import { TradeRateDetails } from '../TradeRateDetails'
 
+import { useContext } from 'react'
+import {UserContext} from '../../../../cow-react';
+
 const BUTTON_STATES_TO_SHOW_BUNDLE_APPROVAL_BANNER = [SwapButtonState.ApproveAndSwap]
 const BUTTON_STATES_TO_SHOW_BUNDLE_WRAP_BANNER = [SwapButtonState.WrapAndSwap]
 
@@ -65,6 +68,9 @@ export interface SwapWidgetProps {
 }
 
 export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
+  const maxB = useContext(UserContext);
+  const maxBal = maxB?.max || "0"
+
   const { chainId, account } = useWalletInfo()
   const { slippageAdjustedSellAmount, currencies, trade } = useDerivedSwapInfo()
   const slippage = useSwapSlippage()
@@ -129,7 +135,6 @@ export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
     fiatAmount: inputUsdValue,
     receiveAmountInfo: !isSellTrade ? receiveAmountInfo : null,
   }
-
   const outputCurrencyInfo: CurrencyInfo = {
     field: Field.OUTPUT,
     currency: currencies.OUTPUT || null,
@@ -139,9 +144,8 @@ export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
     fiatAmount: outputUsdValue,
     receiveAmountInfo: isSellTrade ? receiveAmountInfo : null,
   }
-
   const inputCurrencyPreviewInfo = {
-    amount: inputCurrencyInfo.balance,
+    amount: inputCurrencyInfo.amount,
     fiatAmount: inputCurrencyInfo.fiatAmount,
     balance: inputCurrencyInfo.balance,
     label: isSellTrade ? 'Sell amount' : 'Expected sell amount',
@@ -181,6 +185,7 @@ export function SwapWidget({ hooksEnabled }: SwapWidgetProps) {
     impactWarningAccepted,
     openNativeWrapModal,
     priceImpactParams,
+    maxBal
   })
 
   const tradeUrlParams = useTradeRouteContext()

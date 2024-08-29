@@ -31,21 +31,19 @@ export const useAllQuotes = ({
 }: Partial<Pick<ClearQuoteParams, 'chainId'>>): Partial<QuotesMap> | undefined => {
   return useSelector<AppState, Partial<QuotesMap> | undefined>((state) => {
     const quotes = chainId && state.price.quotes[chainId]
-
     if (!quotes) return {}
-
     return quotes
   })
 }
 
 export const useQuote = ({ token, chainId }: QuoteParams): QuoteInformationObject | undefined => {
-  return useSelector<AppState, QuoteInformationObject | undefined>((state) => {
+  const data = useSelector<AppState, QuoteInformationObject | undefined>((state) => {
     const fees = chainId && state.price.quotes[chainId]
 
     if (!fees) return undefined
-
     return token ? fees[token] : undefined
   })
+  return data;
 }
 
 export const useIsQuoteLoading = () =>
@@ -67,7 +65,6 @@ interface UseGetQuoteAndStatus {
 export const useGetQuoteAndStatus = (params: QuoteParams): UseGetQuoteAndStatus => {
   const quote = useQuote(params)
   const isLoading = useIsQuoteLoading()
-
   const isGettingNewQuote = Boolean(isLoading && !quote?.price?.amount)
   const isRefreshingQuote = Boolean(isLoading && quote?.price?.amount)
 

@@ -2,18 +2,18 @@ import { TradeWarning, TradeWarningType } from './index'
 
 const text = (
   <span>
-    Price impact <strong>unknown</strong> - trade carefully
+    great swap
   </span>
 )
 
 const tooltipContent = (
   <div>
     <small>
-      We are unable to calculate the price impact for this order.
-      <br />
+      really good
+      {/* <br />
       <br />
       You may still move forward but{' '}
-      <strong>please review carefully that the receive amounts are what you expect.</strong>
+      <strong>please review carefully that the receive amounts are what you expect.</strong> */}
     </small>
   </div>
 )

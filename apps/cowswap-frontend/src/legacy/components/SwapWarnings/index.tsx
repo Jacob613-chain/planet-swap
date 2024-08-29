@@ -156,9 +156,9 @@ export const HighFeeWarning = (props: WarningProps) => {
       <div>
         <AlertTriangle size={24} />
         Costs less than 0.3% of the swap amount!{' '}
-        <HoverTooltip wrapInContainer content={<HighFeeWarningMessage feePercentage={feePercentage} />}>
-          <ErrorStyledInfoIcon />
-        </HoverTooltip>{' '}
+        {/* <HoverTooltip wrapInContainer content={<HighFeeWarningMessage feePercentage={feePercentage} />}> */}
+          {/* <ErrorStyledInfoIcon /> */}
+        {/* </HoverTooltip>{' '} */}
       </div>
 
       {acceptWarningCb && (

@@ -19,21 +19,19 @@ import { TradeType } from 'modules/trade'
 
 import { useGP2SettlementContract } from 'common/hooks/useContract'
 
-export function useSwapFlowContext(): SwapFlowContext | null {
+export function useSwapFlowContext(maxBal: String): SwapFlowContext | null {
   const contract = useGP2SettlementContract()
   const baseProps = useBaseFlowContextSetup()
   const sellCurrency = baseProps.trade?.inputAmount?.currency
   const permitInfo = usePermitInfo(sellCurrency, TradeType.SWAP)
   const generatePermitHook = useGeneratePermitHook()
   const typedHooks = useAppDataHooks()
-
   const checkAllowanceAddress = COW_PROTOCOL_VAULT_RELAYER_ADDRESS[baseProps.chainId || SupportedChainId.MAINNET]
   const { enoughAllowance } = useEnoughBalanceAndAllowance({
     account: baseProps.account,
     amount: baseProps.inputAmountWithSlippage,
     checkAllowanceAddress,
   })
-
   return useMemo(() => {
     if (!baseProps.trade) {
       return null
@@ -44,11 +42,9 @@ export function useSwapFlowContext(): SwapFlowContext | null {
       sellToken: getWrappedToken(baseProps.trade.inputAmount.currency),
       kind: baseProps.trade.tradeType === UniTradeType.EXACT_INPUT ? OrderKind.SELL : OrderKind.BUY,
     })
-
     if (!contract || !baseContext || baseProps.flowType !== FlowType.REGULAR) {
       return null
     }
-
     return {
       ...baseContext,
       contract,

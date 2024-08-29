@@ -30,7 +30,7 @@ export default function Page({ siteConfigData }: PageProps) {
   const { title } = siteConfigData
 
   return (
-    <Layout bgColor={Color.neutral90} metaTitle="CoW Swap - Privacy policy" metaDescription="Privacy policy for CoW">
+    <Layout bgColor={Color.neutral90} metaTitle="Planet Swap - Privacy policy" metaDescription="Privacy policy for CoW">
       <Wrapper>
         <ContainerCard bgColor={Color.neutral100} minHeight="70vh" gap={62} gapMobile={42} centerContent touchFooter>
           <ArticleContent maxWidth="100%">
@@ -699,7 +699,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
     props: {
       siteConfigData: {
         ...CONFIG,
-        title: 'CoW Swap Privacy policy',
+        title: 'Planet Swap Privacy policy',
         descriptionShort: 'Privacy policy',
       },
     },

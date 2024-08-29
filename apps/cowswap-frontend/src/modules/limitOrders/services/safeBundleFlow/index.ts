@@ -82,7 +82,7 @@ export async function safeBundleFlow(
       signer: provider.getSigner(),
       validTo,
     })
-
+    console.log("aaaaaaaaaaa1 ", order)
     logTradeFlow(LOG_PREFIX, 'STEP 4: add order, but hidden')
     addPendingOrderStep(
       {

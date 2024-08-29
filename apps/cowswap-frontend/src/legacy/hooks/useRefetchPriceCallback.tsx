@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext } from 'react'
 import {UserContext} from '../../cow-react';
 
 import { isOnline } from '@cowprotocol/common-hooks'
@@ -127,14 +127,13 @@ export function useRefetchQuoteCallback() {
   const strategy = useGetGpPriceStrategy()
   const [deadline] = useUserTransactionTTL()
   const isEoaEthFlow = useIsEoaEthFlow()
-
+  const MaxBal = useContext(UserContext);
   return useCallback(
     async (params: QuoteParamsForFetching) => {
       const { quoteParams, isPriceRefresh } = params
       // set the validTo time here
       quoteParams.validFor = deadline
       quoteParams.isEthFlow = isEoaEthFlow
-
       let quoteData: LegacyFeeQuoteParams | QuoteInformationObject = quoteParams
 
       // price can be null if fee > price
@@ -196,6 +195,64 @@ export function useRefetchQuoteCallback() {
         // Update quote
         updateQuote({ ...quoteData, quoteValidTo: price.value.quoteValidTo, isBestQuote })
       }
+      const handleResponse1 = (response: CancelableResult<QuoteResult>, isBestQuote: boolean) => {
+        const { cancelled, data } = response
+
+        if (cancelled) {
+          // Cancellation can happen if a new request is made, then any ongoing query is canceled
+          console.debug('[useRefetchPriceCallback] Canceled get quote price for', params)
+          return
+        }
+
+        const [price, quoteResponsePromise] = data as QuoteResult
+
+        const quoteResponse = getPromiseFulfilledValue(quoteResponsePromise, undefined)
+
+        const fee = quoteResponse
+          ? {
+              expirationDate: quoteResponse.expiration,
+              amount: quoteResponse.quote.feeAmount,
+            }
+          : undefined
+        quoteData = {
+          ...quoteParams,
+          response: quoteResponse,
+          fee,
+          price: getPromiseFulfilledValue(price, undefined),
+        }
+        // check the promise fulfilled values
+        // handle if rejected
+        if (!isPromiseFulfilled(quoteResponsePromise)) {
+          // fee error takes precedence
+          throw quoteResponsePromise.reason
+        } else if (!isPromiseFulfilled(price)) {
+          throw price.reason
+        }
+
+        // we need to check if returned price is 0 - this is rare but can occur e.g DAI <> WBTC where price diff is huge
+        // TODO: check if this should be handled differently by backend - maybe we return a new error like "ZERO_PRICE"
+        if (price.value.amount === '0')
+          throw new QuoteApiError({
+            errorType: QuoteApiErrorCodes.ZeroPrice,
+            description: QuoteApiErrorDetails.ZeroPrice,
+          })
+
+        const previouslyUnsupportedToken = getIsUnsupportedToken(sellToken)
+          ? sellToken
+          : getIsUnsupportedToken(buyToken)
+          ? buyToken
+          : null
+        // can be a previously unsupported token which is now valid
+        // so we check against map and remove it
+        if (previouslyUnsupportedToken) {
+          console.debug('[useRefetchPriceCallback]::Previously unsupported token now supported - re-enabling.')
+
+          removeGpUnsupportedToken(previouslyUnsupportedToken)
+        }
+
+        // Update quote
+        // updateQuote({ ...quoteData, quoteValidTo: price.value.quoteValidTo, isBestQuote })
+      }
 
       const handleError = (error: QuoteApiError) => {
         // handle any errors in quote fetch
@@ -223,31 +280,28 @@ export function useRefetchQuoteCallback() {
         // Get new quote
         getNewQuote(quoteParams)
       }
-
       // Init get quote methods params
-
+      
       const bestQuoteParams = {
         ...params,
         strategy,
         quoteParams,
       }
-
-
       const fastQuoteParams = {
         quoteParams: {
           ...quoteParams,
           priceQuality: PriceQuality.FAST,
         },
       }
-
+      
       // Get the fast quote
       if (!isPriceRefresh) {
         getFastQuoteResolveOnlyLastCall(fastQuoteParams)
           .then((res) => handleResponse(res, false))
           .catch(handleError)
       }
-
-      getBestQuoteResolveOnlyLastCall(bestQuoteParams)
+      
+       getBestQuoteResolveOnlyLastCall(bestQuoteParams)
         .then((res) => {
           handleResponse(res, true)
         })
@@ -268,77 +322,3 @@ export function useRefetchQuoteCallback() {
     ]
   )
 }
-// export function useRefetchQuoteMaxCallback() {
-//   const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getMaxQuote)
-//   const usersContext = useContext(UserContext);
-
-//   return useCallback(
-//     async (params: QuoteParamsForFetching): Promise<{ sellAmount: string, buyAmount: string }> => {
-//       const { quoteParams } = params
-//       const strategy = useGetGpPriceStrategy()
-//       const parames = params;
-//       if (usersContext?.max && !isNaN(Number(usersContext.max))) {
-//           parames.quoteParams.amount = usersContext.max;
-//       } else {
-//           parames.quoteParams.amount = "0";
-//       }
-//       const maxQuoteParams = {
-//         ...parames,
-//         strategy,
-//         quoteParams,
-//       }
-      
-//       const result = await getMaxQuoteResolveOnlyLastCall(maxQuoteParams);
-
-//       const sellAmount = usersContext?.max || "0";
-//       const buyAmount = result.data?.toString() || "0";
-//       if (usersContext) {
-//         const {updateBuyAmount} = usersContext;
-//         updateBuyAmount(result.data?.toString() || "");
-//       }
-//       console.log("sellAmount", sellAmount, buyAmount)
-//       return {
-//         sellAmount,
-//         buyAmount,
-//       };
-//     },
-//     []
-//   )
-// }
-// export function refetchQuoteMax(params: QuoteParamsForFetching) {
-//   const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast(getMaxQuote);
-//   const usersContext = useContext(UserContext);
-
-//   return async () => {
-//     const { quoteParams } = params;
-//     const strategy = useGetGpPriceStrategy();
-//     if (usersContext?.max && !isNaN(Number(usersContext.max))) {
-//       quoteParams.amount = usersContext.max;
-//     } else {
-//       quoteParams.amount = "0";
-//     }
-
-//     const maxQuoteParams = {
-//       ...params,
-//       strategy,
-//       quoteParams,
-//     };
-
-//     const result = await getMaxQuoteResolveOnlyLastCall(maxQuoteParams);
-
-//     const sellAmount = usersContext?.max || "0";
-//     const buyAmount = result.data?.toString() || "0";
-
-//     // Update the buy amount in the user context if it exists
-//     if (usersContext) {
-//       const { updateBuyAmount } = usersContext;
-//       updateBuyAmount(result.data?.toString() || "");
-//     }
-
-//     // console.log("sellAmount", sellAmount, buyAmount);
-//     return {
-//       sellAmount,
-//       buyAmount,
-//     };
-//   };
-// }

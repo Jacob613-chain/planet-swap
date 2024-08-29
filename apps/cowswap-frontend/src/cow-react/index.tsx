@@ -31,9 +31,9 @@ import { BlockNumberProvider } from '../common/hooks/useBlockNumber'
 import {createContext, useState} from 'react'
 interface UserContextType {
   max: string;
-  buyAmount : string;
+  // buyAmount : string;
   updateMax: (max: string) => void;
-  updateBuyAmount: (max: string) => void;
+  // updateBuyAmount: (max: string) => void;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -47,17 +47,17 @@ if (window.ethereum) {
 
 function Main() {
   const [max, setMax] = useState<string>("0");
-  const [buyAmount, setBuyAmount] = useState<string>("0");
+  // const [buyAmount, setBuyAmount] = useState<string>("0");
   const updateMax = (newMax: string) => {
     setMax(newMax);
   };
-  const updateBuyAmount = (newBuyAmount: string) => {
-    setBuyAmount(newBuyAmount);
-  };
+  // const updateBuyAmount = (newBuyAmount: string) => {
+  //   setBuyAmount(newBuyAmount);
+  // };
   return (
     <StrictMode>
       <Provider store={cowSwapStore}>
-      <UserContext.Provider value={{ max, updateMax, buyAmount, updateBuyAmount }}>
+      <UserContext.Provider value={{ max, updateMax }}>
 
         <AtomProvider store={jotaiStore}>
           <HashRouter>
