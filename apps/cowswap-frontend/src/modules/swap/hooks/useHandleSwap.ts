@@ -41,8 +41,6 @@ export function useHandleSwap(priceImpactParams: PriceImpact, maxBal: string): (
         return swapFlow(swapFlowContext, priceImpactParams, confirmPriceImpactWithoutFee)
       } else if (ethFlowContext) {
         logTradeFlow('ETH FLOW', 'Start eth flow')
-        console.log("price4",priceImpactParams);
-
         return ethFlow(ethFlowContext, priceImpactParams, confirmPriceImpactWithoutFee)
       }
     })()

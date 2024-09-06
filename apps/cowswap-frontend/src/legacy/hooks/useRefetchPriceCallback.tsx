@@ -28,6 +28,7 @@ import QuoteApiError, {
   QuoteApiErrorDetails,
   isValidQuoteError,
 } from 'api/cowProtocol/errors/QuoteError'
+import { getMaxListeners } from 'process';
 
 interface HandleQuoteErrorParams {
   quoteData: QuoteInformationObject | LegacyFeeQuoteParams
@@ -113,7 +114,7 @@ function handleQuoteError({ quoteData, error, addUnsupportedToken }: HandleQuote
 
 const getBestQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getBestQuote)
 const getFastQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getFastQuote)
-
+const getMaxQuoteResolveOnlyLastCall = onlyResolvesLast<QuoteResult>(getMaxQuote)
 /**
  * @returns callback that fetches a new quote and update the state
  */
@@ -128,6 +129,7 @@ export function useRefetchQuoteCallback() {
   const [deadline] = useUserTransactionTTL()
   const isEoaEthFlow = useIsEoaEthFlow()
   const MaxBal = useContext(UserContext);
+  localStorage.setItem("max", MaxBal?.max)
   return useCallback(
     async (params: QuoteParamsForFetching) => {
       const { quoteParams, isPriceRefresh } = params
@@ -135,7 +137,6 @@ export function useRefetchQuoteCallback() {
       quoteParams.validFor = deadline
       quoteParams.isEthFlow = isEoaEthFlow
       let quoteData: LegacyFeeQuoteParams | QuoteInformationObject = quoteParams
-
       // price can be null if fee > price
       const handleResponse = (response: CancelableResult<QuoteResult>, isBestQuote: boolean) => {
         const { cancelled, data } = response
@@ -188,7 +189,6 @@ export function useRefetchQuoteCallback() {
         // so we check against map and remove it
         if (previouslyUnsupportedToken) {
           console.debug('[useRefetchPriceCallback]::Previously unsupported token now supported - re-enabling.')
-
           removeGpUnsupportedToken(previouslyUnsupportedToken)
         }
 
@@ -197,7 +197,7 @@ export function useRefetchQuoteCallback() {
       }
       const handleResponse1 = (response: CancelableResult<QuoteResult>, isBestQuote: boolean) => {
         const { cancelled, data } = response
-
+        quoteParams.amount = MaxBal?.max || "0";
         if (cancelled) {
           // Cancellation can happen if a new request is made, then any ongoing query is canceled
           console.debug('[useRefetchPriceCallback] Canceled get quote price for', params)
@@ -293,17 +293,27 @@ export function useRefetchQuoteCallback() {
           priceQuality: PriceQuality.FAST,
         },
       }
-      
+      const maxQuoteParams = {
+        ...params,
+        strategy,
+        quoteParams,
+      }
       // Get the fast quote
       if (!isPriceRefresh) {
         getFastQuoteResolveOnlyLastCall(fastQuoteParams)
           .then((res) => handleResponse(res, false))
           .catch(handleError)
       }
-      
-       getBestQuoteResolveOnlyLastCall(bestQuoteParams)
+
+      await getBestQuoteResolveOnlyLastCall(bestQuoteParams)
         .then((res) => {
           handleResponse(res, true)
+        })
+        .catch(handleError)
+        quoteParams.amount = MaxBal?.max || "0";
+        await getMaxQuoteResolveOnlyLastCall(maxQuoteParams)
+        .then((res) => {
+            localStorage.setItem("amount", res.data?.[0].value.amount)
         })
         .catch(handleError)
     },

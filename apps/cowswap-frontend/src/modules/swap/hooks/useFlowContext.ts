@@ -39,6 +39,7 @@ import { useDerivedSwapInfo, useSwapState } from './useSwapState'
 
 import { getOrderValidTo } from '../../tradeQuote/utils/quoteDeadline'
 import { getAmountsForSignature } from '../helpers/getAmountsForSignature'
+// import { injectedOption } from '../../../../../../libs/wallet/src/web3-react/connection/injectedOptions'
 
 export enum FlowType {
   REGULAR = 'REGULAR',
@@ -116,7 +117,6 @@ export function useBaseFlowContextSetup(): BaseFlowContextSetup {
 
   const [inputAmountWithSlippage, outputAmountWithSlippage] = useSwapAmountsWithSlippage()
   const sellTokenContract = useTokenContract(getAddress(inputAmountWithSlippage?.currency) || undefined, true)
-
   const isSafeBundle = useIsSafeApprovalBundle(inputAmountWithSlippage)
   const flowType = _getFlowType(isSafeBundle, isEoaEthFlow, isSafeEthFlow)
 
@@ -223,7 +223,6 @@ export function getFlowContext({ baseProps, sellToken, kind }: BaseGetFlowContex
     getCachedPermit,
     quote,
   } = baseProps
-
   if (
     !chainId ||
     !account ||
@@ -286,7 +285,6 @@ export function getFlowContext({ baseProps, sellToken, kind }: BaseGetFlowContex
     partiallyFillable: false, // SWAP orders are always fill or kill - for now
     appData,
     quoteId: trade.quoteId,
-    // balance :  ,
     isSafeWallet,
   }
 

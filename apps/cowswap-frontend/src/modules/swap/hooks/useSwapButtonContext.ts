@@ -59,7 +59,7 @@ export function useSwapButtonContext(input: SwapButtonInput): SwapButtonsContext
     inputError: swapInputError,
   } = useDerivedSwapInfo()
   const toggleWalletModal = useToggleWalletModal()
-  const swapFlowContext = useSwapFlowContext(maxBal)
+  const swapFlowContext = useSwapFlowContext()
   const ethFlowContext = useEthFlowContext()
   const safeBundleApprovalFlowContext = useSafeBundleApprovalFlowContext()
   const safeBundleEthFlowContext = useSafeBundleEthFlowContext()

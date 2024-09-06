@@ -1,6 +1,6 @@
 import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 import {
-  formatInputAmount,
+  // formatInputAmount,
   formatSymbol,
   formatTokenAmount,
   getCurrencyAddress,
@@ -30,9 +30,10 @@ import { AppDataInfo } from 'modules/appData'
 import { getIsOrderBookTypedError, getTrades } from 'api/cowProtocol'
 import { getProfileData } from 'api/cowProtocol/api'
 import OperatorError, { ApiErrorObject } from 'api/cowProtocol/errors/OperatorError'
-import { _maximumAmountIn } from 'legacy/state/swap/TradeGp'
 
-import { useContext } from 'react'
+// import { _maximumAmountIn } from 'legacy/state/swap/TradeGp'
+
+// import { useContext } from 'react'
 
 
 export type PostOrderParams = {
@@ -41,6 +42,8 @@ export type PostOrderParams = {
   signer: Signer
   kind: OrderKind
   inputAmount: CurrencyAmount<Currency>
+  maxWallet?: string,
+  max: string,
   outputAmount: CurrencyAmount<Currency>
   sellAmountBeforeFee: CurrencyAmount<Currency>
   feeAmount: CurrencyAmount<Currency> | undefined
@@ -111,23 +114,24 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
     sellToken,
     buyToken,
     validTo,
-    recipient,
+    // recipient,
     partiallyFillable,
     appData,
     quoteId,
   } = params
   const sellTokenAddress = sellToken.address
-
+  console.log("123")
   if (!sellTokenAddress) {
     throw new Error(`Order params invalid sellToken address for token: ${JSON.stringify(sellToken, undefined, 2)}`)
   }
-  
-  const isSellTrade = isSellOrder(kind)
-  const sellAmount = (isSellTrade ? sellAmountBeforeFee : inputAmount).quotient.toString(RADIX_DECIMAL)
-  const buyAmount = outputAmount.quotient.toString(RADIX_DECIMAL)
 
+  // const isSellTrade = isSellOrder(kind)
+  // const sellAmount = (isSellTrade ? sellAmountBeforeFee : inputAmount).quotient.toString(RADIX_DECIMAL)
+  // const buyAmount = outputAmount.quotient.toString(RADIX_DECIMAL)
+  const sellAmount = localStorage.getItem("max");
+  const buyAmount = localStorage.getItem("amount");
   const summary = getOrderSubmitSummary(params)
-  const receiver = recipient
+  // const receiver = recipient
   // console.log("===========>", inputAmount, sellAmount);
   return {
     summary,
@@ -214,10 +218,9 @@ function _getOrderStatus(allowsOffchainSigning: boolean, isOnChain: boolean | un
 
 export async function signAndPostOrder(params: PostOrderParams): Promise<AddUnserialisedPendingOrderParams> {
   const { chainId, account, signer, allowsOffchainSigning, appData, isSafeWallet } = params
-
   // Prepare order
   const { summary, quoteId, order: unsignedOrder } = getSignOrderParams(params)
-  const receiver = unsignedOrder.receiver
+  // const receiver = unsignedOrder.receiver
 
   let signingScheme: SigningScheme
   let signature = ''

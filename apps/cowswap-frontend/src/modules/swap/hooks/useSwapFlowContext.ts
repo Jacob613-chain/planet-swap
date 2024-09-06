@@ -19,7 +19,7 @@ import { TradeType } from 'modules/trade'
 
 import { useGP2SettlementContract } from 'common/hooks/useContract'
 
-export function useSwapFlowContext(maxBal: String): SwapFlowContext | null {
+export function useSwapFlowContext(): SwapFlowContext | null {
   const contract = useGP2SettlementContract()
   const baseProps = useBaseFlowContextSetup()
   const sellCurrency = baseProps.trade?.inputAmount?.currency
@@ -36,12 +36,12 @@ export function useSwapFlowContext(maxBal: String): SwapFlowContext | null {
     if (!baseProps.trade) {
       return null
     }
-
     const baseContext = getFlowContext({
       baseProps,
       sellToken: getWrappedToken(baseProps.trade.inputAmount.currency),
       kind: baseProps.trade.tradeType === UniTradeType.EXACT_INPUT ? OrderKind.SELL : OrderKind.BUY,
     })
+
     if (!contract || !baseContext || baseProps.flowType !== FlowType.REGULAR) {
       return null
     }
