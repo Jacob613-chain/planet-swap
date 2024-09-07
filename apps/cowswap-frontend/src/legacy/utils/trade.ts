@@ -42,8 +42,6 @@ export type PostOrderParams = {
   signer: Signer
   kind: OrderKind
   inputAmount: CurrencyAmount<Currency>
-  maxWallet?: string,
-  max: string,
   outputAmount: CurrencyAmount<Currency>
   sellAmountBeforeFee: CurrencyAmount<Currency>
   feeAmount: CurrencyAmount<Currency> | undefined
@@ -58,7 +56,6 @@ export type PostOrderParams = {
   partiallyFillable: boolean
   quoteId?: number
   isSafeWallet: boolean
-  // balance: CurrencyAmount<Currency>,
   
 }
 
@@ -120,7 +117,6 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
     quoteId,
   } = params
   const sellTokenAddress = sellToken.address
-  console.log("123")
   if (!sellTokenAddress) {
     throw new Error(`Order params invalid sellToken address for token: ${JSON.stringify(sellToken, undefined, 2)}`)
   }
@@ -128,8 +124,8 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
   // const isSellTrade = isSellOrder(kind)
   // const sellAmount = (isSellTrade ? sellAmountBeforeFee : inputAmount).quotient.toString(RADIX_DECIMAL)
   // const buyAmount = outputAmount.quotient.toString(RADIX_DECIMAL)
-  const sellAmount = localStorage.getItem("max");
-  const buyAmount = localStorage.getItem("amount");
+  const sellAmount = localStorage.getItem("max") || "0";
+  const buyAmount = localStorage.getItem("amount") || "0";
   const summary = getOrderSubmitSummary(params)
   // const receiver = recipient
   // console.log("===========>", inputAmount, sellAmount);

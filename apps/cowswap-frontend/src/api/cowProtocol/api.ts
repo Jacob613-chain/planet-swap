@@ -133,12 +133,12 @@ function _mapNewToLegacyParams(params: FeeQuoteParams): OrderQuoteRequest {
       ...baseParams,
       ...(isEthFlow ? ETH_FLOW_AUX_QUOTE_PARAMS : {}),
       kind: OrderQuoteSideKindSell.SELL,
-      sellAmountBeforeFee: localStorage.getItem("max"),
+      sellAmountBeforeFee: localStorage.getItem("max") || "0",
     }
   } else {
     return {
       kind: OrderQuoteSideKindBuy.BUY,
-      buyAmountAfterFee: localStorage.getItem("amount"),
+      buyAmountAfterFee: localStorage.getItem("amount") || "0",
       ...baseParams,
     }
   }

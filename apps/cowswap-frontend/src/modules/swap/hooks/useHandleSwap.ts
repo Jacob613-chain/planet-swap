@@ -16,8 +16,8 @@ import { useSafeBundleEthFlowContext } from './useSafeBundleEthFlowContext'
 import { useSwapFlowContext } from './useSwapFlowContext'
 import { useSwapActionHandlers } from './useSwapState'
 
-export function useHandleSwap(priceImpactParams: PriceImpact, maxBal: string): () => Promise<void> {
-  const swapFlowContext = useSwapFlowContext(maxBal)
+export function useHandleSwap(priceImpactParams: PriceImpact): () => Promise<void> {
+  const swapFlowContext = useSwapFlowContext()
   const ethFlowContext = useEthFlowContext()
   const safeBundleApprovalFlowContext = useSafeBundleApprovalFlowContext()
   const safeBundleEthFlowContext = useSafeBundleEthFlowContext()

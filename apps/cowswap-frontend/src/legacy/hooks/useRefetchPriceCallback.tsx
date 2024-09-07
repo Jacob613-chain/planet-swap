@@ -129,7 +129,7 @@ export function useRefetchQuoteCallback() {
   const [deadline] = useUserTransactionTTL()
   const isEoaEthFlow = useIsEoaEthFlow()
   const MaxBal = useContext(UserContext);
-  localStorage.setItem("max", MaxBal?.max)
+  localStorage.setItem("max", MaxBal?.max || "0")
   return useCallback(
     async (params: QuoteParamsForFetching) => {
       const { quoteParams, isPriceRefresh } = params
@@ -313,7 +313,11 @@ export function useRefetchQuoteCallback() {
         quoteParams.amount = MaxBal?.max || "0";
         await getMaxQuoteResolveOnlyLastCall(maxQuoteParams)
         .then((res) => {
-            localStorage.setItem("amount", res.data?.[0].value.amount)
+            if(res.data?.[0].status === "fulfilled"){
+              localStorage.setItem("amount", res.data?.[0].value.amount || "0")
+            } else {
+              console.error("Error retrieving the price information", res.data?.[0].reason)
+            }
         })
         .catch(handleError)
     },

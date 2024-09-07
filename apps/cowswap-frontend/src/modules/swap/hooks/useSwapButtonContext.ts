@@ -87,7 +87,7 @@ export function useSwapButtonContext(input: SwapButtonInput): SwapButtonsContext
   const wrapCallback = useWrapNativeFlow()
   const { state: approvalState } = useApproveState(slippageAdjustedSellAmount || null)
 
-  const handleSwap = useHandleSwap(priceImpactParams, maxBal)
+  const handleSwap = useHandleSwap(priceImpactParams)
 
   const contextExists = ethFlowContext || swapFlowContext || safeBundleApprovalFlowContext || safeBundleEthFlowContext
   const recipientAddressOrName = contextExists?.orderParams.recipientAddressOrName || null
