@@ -2,7 +2,11 @@ import '@reach/dialog/styles.css'
 import 'inter-ui'
 import './sentry'
 import { Provider as AtomProvider } from 'jotai'
+<<<<<<< HEAD
 import { ReactNode, StrictMode, createContext, useState } from 'react'
+=======
+import { ReactNode, StrictMode,createContext, useState } from 'react'
+>>>>>>> 32df0f1f50759ca05d4313919db7599d33e5285d
 
 import { CowAnalyticsProvider } from '@cowprotocol/analytics'
 import { nodeRemoveChildFix } from '@cowprotocol/common-utils'
@@ -28,6 +32,10 @@ import { useInjectedWidgetParams } from 'modules/injectedWidget'
 
 import { WalletUnsupportedNetworkBanner } from '../common/containers/WalletUnsupportedNetworkBanner'
 import { BlockNumberProvider } from '../common/hooks/useBlockNumber'
+<<<<<<< HEAD
+=======
+
+>>>>>>> 32df0f1f50759ca05d4313919db7599d33e5285d
 interface UserContextType {
   max: string;
   // buyAmount : string;

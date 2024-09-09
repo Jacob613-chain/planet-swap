@@ -55,7 +55,6 @@ function handleQuoteError({ quoteData, error, addUnsupportedToken }: HandleQuote
       default: {
         // some other operator error occurred, log it
         console.error('Error quoting price/fee. Unhandled operator error: ' + error.type, error)
-
         return 'fetch-quote-error'
       }
     }
