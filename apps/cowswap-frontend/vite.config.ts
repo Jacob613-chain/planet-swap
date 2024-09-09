@@ -57,17 +57,17 @@ export default defineConfig(({ mode }) => {
     }),
   ]
 
-  if (analyzeBundle) {
-    plugins.push(
-      visualizer({
-        template: analyzeBundleTemplate,
-        open: true,
-        gzipSize: true,
-        brotliSize: true,
-        filename: 'analyse.html', // will be saved in project's root
-      }) as PluginOption
-    )
-  }
+  // if (analyzeBundle) {
+  //   plugins.push(
+  //     visualizer({
+  //       template: analyzeBundleTemplate,
+  //       open: true,
+  //       gzipSize: true,
+  //       brotliSize: true,
+  //       filename: 'analyse.html', // will be saved in project's root
+  //     }) as PluginOption
+  //   )
+  // }
 
   return {
     base: './',
