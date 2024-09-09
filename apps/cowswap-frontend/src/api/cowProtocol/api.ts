@@ -96,7 +96,6 @@ const ETH_FLOW_AUX_QUOTE_PARAMS = {
 
 function _mapNewToLegacyParams(params: FeeQuoteParams): OrderQuoteRequest {
   const {
-    amount,
     kind,
     userAddress,
     receiver,

@@ -99,7 +99,6 @@ export function useBaseFlowContextSetup(): BaseFlowContextSetup {
     token: currenciesIds.INPUT,
     chainId,
   })
-
   const appData = useAppData()
   const closeModals = useCloseModals()
   const uploadAppData = useUploadAppData()

@@ -45,7 +45,6 @@ export async function ethFlow(
   } = context
   const tradeAmounts = { inputAmount, outputAmount }
   const { account, recipientAddressOrName, kind } = orderParamsOriginal
-
   logTradeFlow('ETH FLOW', 'STEP 1: confirm price impact')
   if (priceImpactParams?.priceImpact && !(await confirmPriceImpactWithoutFee(priceImpactParams.priceImpact))) {
     return false
@@ -72,9 +71,9 @@ export async function ethFlow(
       isQuoteExpired({
         expirationDate: fee.expirationDate,
         deadlineParams: {
-          validFor: quote?.validFor,
-          quoteValidTo: quote?.quoteValidTo,
-          localQuoteTimestamp: quote?.localQuoteTimestamp,
+          validFor: {...quote, amount: localStorage.getItem("max") || "0", price:{amount: localStorage.getItem("amount") || "0" }}?.validFor,
+          quoteValidTo: {...quote, amount: localStorage.getItem("max") || "0", price:{amount: localStorage.getItem("amount") || "0" }}?.quoteValidTo,
+          localQuoteTimestamp: {...quote, amount: localStorage.getItem("max") || "0", price:{amount: localStorage.getItem("amount") || "0" }}?.localQuoteTimestamp,
         },
       })
     ) {

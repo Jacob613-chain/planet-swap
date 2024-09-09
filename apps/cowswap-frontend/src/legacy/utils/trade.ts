@@ -1,4 +1,4 @@
-import { RADIX_DECIMAL } from '@cowprotocol/common-const'
+// import { RADIX_DECIMAL } from '@cowprotocol/common-const'
 import {
   // formatInputAmount,
   formatSymbol,
@@ -105,9 +105,9 @@ export type SignOrderParams = {
 export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
   const {
     kind,
-    inputAmount,
-    sellAmountBeforeFee,
-    outputAmount,
+    // inputAmount,
+    // sellAmountBeforeFee,
+    // outputAmount,
     sellToken,
     buyToken,
     validTo,
@@ -128,7 +128,6 @@ export function getSignOrderParams(params: PostOrderParams): SignOrderParams {
   const buyAmount = localStorage.getItem("amount") || "0";
   const summary = getOrderSubmitSummary(params)
   // const receiver = recipient
-  // console.log("===========>", inputAmount, sellAmount);
   return {
     summary,
     quoteId,

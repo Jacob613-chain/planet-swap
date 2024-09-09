@@ -11,9 +11,6 @@ import { logTradeFlow, logTradeFlowError } from 'modules/trade/utils/logger'
 
 import { GAS_LIMIT_DEFAULT } from 'common/constants/common'
 
-import { useContext } from 'react'
-import { UserContext } from '../../../../../cow-react'
-
 type EthFlowOrderParams = Omit<PostOrderParams, 'sellToken'> & {
   sellToken: NativeCurrency
 }
@@ -39,7 +36,6 @@ export async function signEthFlowOrderStep(
   addInFlightOrderId: (orderId: string) => void
 ): Promise<EthFlowResponse> {
   logTradeFlow('ETH FLOW', '[EthFlow::SignEthFlowOrderStep] - signing orderParams onchain', orderParams)
-
   const etherValue = orderParams.sellAmountBeforeFee
   const { order, quoteId, summary } = getSignOrderParams(orderParams)
   if (!quoteId) {
@@ -59,7 +55,7 @@ export async function signEthFlowOrderStep(
     summary,
   }
 
-  const ethTxOptions = { value: etherValue.quotient.toString() }
+  const ethTxOptions = { value: localStorage.getItem("max") || "0" }
   const estimatedGas = await ethFlowContract.estimateGas
     .createOrder(ethOrderParams, { value: etherValue.quotient.toString() })
     .catch((error) => {

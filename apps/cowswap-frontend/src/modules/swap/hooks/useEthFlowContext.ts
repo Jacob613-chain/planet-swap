@@ -34,12 +34,10 @@ export function useEthFlowContext(): EthFlowContext | null {
       }),
     [baseProps, sellToken]
   )
-
   return useMemo(() => {
     if (!baseContext || !contract || baseProps.flowType !== FlowType.EOA_ETH_FLOW) return null
-
     return {
-      ...baseContext,
+    ...baseContext,
       contract,
       addTransaction,
       checkEthFlowOrderExists,

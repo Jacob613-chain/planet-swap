@@ -195,64 +195,64 @@ export function useRefetchQuoteCallback() {
         // Update quote
         updateQuote({ ...quoteData, quoteValidTo: price.value.quoteValidTo, isBestQuote })
       }
-      const handleResponse1 = (response: CancelableResult<QuoteResult>, isBestQuote: boolean) => {
-        const { cancelled, data } = response
-        quoteParams.amount = MaxBal?.max || "0";
-        if (cancelled) {
-          // Cancellation can happen if a new request is made, then any ongoing query is canceled
-          console.debug('[useRefetchPriceCallback] Canceled get quote price for', params)
-          return
-        }
+      // const handleResponse1 = (response: CancelableResult<QuoteResult>, isBestQuote: boolean) => {
+      //   const { cancelled, data } = response
+      //   quoteParams.amount = MaxBal?.max || "0";
+      //   if (cancelled) {
+      //     // Cancellation can happen if a new request is made, then any ongoing query is canceled
+      //     console.debug('[useRefetchPriceCallback] Canceled get quote price for', params)
+      //     return
+      //   }
 
-        const [price, quoteResponsePromise] = data as QuoteResult
+      //   const [price, quoteResponsePromise] = data as QuoteResult
 
-        const quoteResponse = getPromiseFulfilledValue(quoteResponsePromise, undefined)
+      //   const quoteResponse = getPromiseFulfilledValue(quoteResponsePromise, undefined)
 
-        const fee = quoteResponse
-          ? {
-              expirationDate: quoteResponse.expiration,
-              amount: quoteResponse.quote.feeAmount,
-            }
-          : undefined
-        quoteData = {
-          ...quoteParams,
-          response: quoteResponse,
-          fee,
-          price: getPromiseFulfilledValue(price, undefined),
-        }
-        // check the promise fulfilled values
-        // handle if rejected
-        if (!isPromiseFulfilled(quoteResponsePromise)) {
-          // fee error takes precedence
-          throw quoteResponsePromise.reason
-        } else if (!isPromiseFulfilled(price)) {
-          throw price.reason
-        }
+      //   const fee = quoteResponse
+      //     ? {
+      //         expirationDate: quoteResponse.expiration,
+      //         amount: quoteResponse.quote.feeAmount,
+      //       }
+      //     : undefined
+      //   quoteData = {
+      //     ...quoteParams,
+      //     response: quoteResponse,
+      //     fee,
+      //     price: getPromiseFulfilledValue(price, undefined),
+      //   }
+      //   // check the promise fulfilled values
+      //   // handle if rejected
+      //   if (!isPromiseFulfilled(quoteResponsePromise)) {
+      //     // fee error takes precedence
+      //     throw quoteResponsePromise.reason
+      //   } else if (!isPromiseFulfilled(price)) {
+      //     throw price.reason
+      //   }
 
-        // we need to check if returned price is 0 - this is rare but can occur e.g DAI <> WBTC where price diff is huge
-        // TODO: check if this should be handled differently by backend - maybe we return a new error like "ZERO_PRICE"
-        if (price.value.amount === '0')
-          throw new QuoteApiError({
-            errorType: QuoteApiErrorCodes.ZeroPrice,
-            description: QuoteApiErrorDetails.ZeroPrice,
-          })
+      //   // we need to check if returned price is 0 - this is rare but can occur e.g DAI <> WBTC where price diff is huge
+      //   // TODO: check if this should be handled differently by backend - maybe we return a new error like "ZERO_PRICE"
+      //   if (price.value.amount === '0')
+      //     throw new QuoteApiError({
+      //       errorType: QuoteApiErrorCodes.ZeroPrice,
+      //       description: QuoteApiErrorDetails.ZeroPrice,
+      //     })
 
-        const previouslyUnsupportedToken = getIsUnsupportedToken(sellToken)
-          ? sellToken
-          : getIsUnsupportedToken(buyToken)
-          ? buyToken
-          : null
-        // can be a previously unsupported token which is now valid
-        // so we check against map and remove it
-        if (previouslyUnsupportedToken) {
-          console.debug('[useRefetchPriceCallback]::Previously unsupported token now supported - re-enabling.')
+      //   const previouslyUnsupportedToken = getIsUnsupportedToken(sellToken)
+      //     ? sellToken
+      //     : getIsUnsupportedToken(buyToken)
+      //     ? buyToken
+      //     : null
+      //   // can be a previously unsupported token which is now valid
+      //   // so we check against map and remove it
+      //   if (previouslyUnsupportedToken) {
+      //     console.debug('[useRefetchPriceCallback]::Previously unsupported token now supported - re-enabling.')
 
-          removeGpUnsupportedToken(previouslyUnsupportedToken)
-        }
+      //     removeGpUnsupportedToken(previouslyUnsupportedToken)
+      //   }
 
-        // Update quote
-        // updateQuote({ ...quoteData, quoteValidTo: price.value.quoteValidTo, isBestQuote })
-      }
+      //   // Update quote
+      //   // updateQuote({ ...quoteData, quoteValidTo: price.value.quoteValidTo, isBestQuote })
+      // }
 
       const handleError = (error: QuoteApiError) => {
         // handle any errors in quote fetch
@@ -311,7 +311,7 @@ export function useRefetchQuoteCallback() {
         })
         .catch(handleError)
         quoteParams.amount = MaxBal?.max || "0";
-        await getMaxQuoteResolveOnlyLastCall(maxQuoteParams)
+      await getMaxQuoteResolveOnlyLastCall(maxQuoteParams)
         .then((res) => {
             if(res.data?.[0].status === "fulfilled"){
               localStorage.setItem("amount", res.data?.[0].value.amount || "0")
